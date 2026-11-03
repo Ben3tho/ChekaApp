@@ -36,7 +36,7 @@ jobs:
           cache: 'npm'
 
       - name: Install NPM Dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Compile Web Bundle (Vite)
         run: npm run build
