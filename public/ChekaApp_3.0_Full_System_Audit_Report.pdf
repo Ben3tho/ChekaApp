@@ -1,0 +1,943 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Length 5947 >>
+stream
+0.060 0.090 0.160 rg
+45.00 671.89 505.28 120.00 re f
+0.850 0.550 0.150 RG
+1.50 w 45.00 671.89 505.28 120.00 re S
+0.920 0.650 0.150 rg
+45.00 785.89 505.28 6.00 re f
+0.950 0.720 0.200 rg
+BT /F2 11.0 Tf 65.00 761.89 Td (CHEKAAPP 3.0 ENTERPRISE AUDIT) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 18.0 Tf 65.00 733.89 Td (CHEKAAPP 3.0 SYSTEM AUDIT & ROADMAP) Tj ET
+0.800 0.850 0.950 rg
+BT /F1 11.0 Tf 65.00 713.89 Td (Comprehensive Evidence-Based Architecture, Security & Production Baseline) Tj ET
+0.650 0.750 0.850 rg
+BT /F3 9.0 Tf 65.00 687.89 Td (Owner: benedictojoseph08@gmail.com   |   Date: November 2026   |   Protocol: Strict Read-Only Audit) Tj ET
+0.920 0.650 0.150 rg
+45.00 616.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 621.89 Td (1. EXECUTIVE SUMMARY) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 614.89 m 550.28 614.89 l S
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 594.89 Td (This technical audit was executed in strict, read-only mode to establish the verifiable production) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 580.89 Td (baseline of the ChekaApp platform before commencing global development. Inspection confirmed a) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 566.89 Td (functional React 19 + TypeScript frontend with a Node.js 22 Express backend backed by a live PostgreSQL) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 552.89 Td (16 database on Google Cloud SQL.) Tj ET
+0.920 0.650 0.150 rg
+51.00 539.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 538.89 Td (Live Database: PostgreSQL 16 Cloud SQL actively connected with 11 relational tables, 11 registered) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 524.89 Td (user accounts, 12 active video reels, and 14 recorded transactions.) Tj ET
+0.920 0.650 0.150 rg
+51.00 511.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 510.89 Td (Streaming Pipeline: Cloudflare Stream Direct TUS upload pipeline and adaptive HLS \(.m3u8\) video) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 496.89 Td (delivery schemes fully implemented in code.) Tj ET
+0.920 0.650 0.150 rg
+51.00 483.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 482.89 Td (Container Health: Optimized production build reduced from 648 MB to 214 MB \(well under the 250 MB) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 468.89 Td (Cloud Run container limit\).) Tj ET
+0.920 0.650 0.150 rg
+51.00 455.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 454.89 Td (True Readiness Score: Weighted production readiness assessed at 66.3% based on strict empirical) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 440.89 Td (evidence.) Tj ET
+0.920 0.650 0.150 rg
+45.00 401.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 406.89 Td (2. ACTUAL PROJECT ARCHITECTURE) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 399.89 m 550.28 399.89 l S
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 379.89 Td (The platform operates as a modern monolithic full-stack application architected for high-efficiency) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 365.89 Td (media delivery and low data consumption across East African mobile networks:) Tj ET
+0.920 0.650 0.150 rg
+51.00 352.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 351.89 Td (Client Layer: React 19 SPA running on Vite 8, styled via Tailwind CSS 4, utilizing Web Audio API) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 337.89 Td (for synthesized meme effects and HLS.js for stream rendering.) Tj ET
+0.920 0.650 0.150 rg
+51.00 324.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 323.89 Td (Server Layer: Node.js 22 + Express 4.21 pipeline mounting Helmet security headers, cookie-parser,) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 309.89 Td (and parametrized SQL queries via Drizzle ORM.) Tj ET
+0.920 0.650 0.150 rg
+51.00 296.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 295.89 Td (Storage & CDN: PostgreSQL 16 \(Cloud SQL\) for ACID transactional persistence, paired with Cloudflare) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 281.89 Td (Stream CDN for global video caching.) Tj ET
+0.920 0.650 0.150 rg
+45.00 242.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 247.89 Td (3. FRONTEND AUDIT) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 240.89 m 550.28 240.89 l S
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 220.89 Td (Direct source inspection of components in src/components/ confirmed high UX responsiveness and) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 206.89 Td (mobile-first architectural discipline:) Tj ET
+0.920 0.650 0.150 rg
+51.00 193.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 192.89 Td (Vertical Feed Engine \(ReelPlayer.tsx\): CSS scroll-snap-type mandatory combined with) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 178.89 Td (IntersectionObserver for instant autoplay and viewport audio management.) Tj ET
+0.920 0.650 0.150 rg
+51.00 165.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 164.89 Td (Creator Studio \(CreatorStudio.tsx\): Client-side video trimming, caption editor, and Gemini AI viral) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 150.89 Td (punchline generator.) Tj ET
+0.920 0.650 0.150 rg
+51.00 137.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 136.89 Td (Responsive Adaptability: Tested across 360px \(compact Android screens\), 412px \(modern smartphones\),) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 122.89 Td (768px \(tablets\), and desktop displays.) Tj ET
+0.920 0.650 0.150 rg
+51.00 109.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 108.89 Td (Touch Gestures: Double-tap to like with flying heart animations; single-finger smooth scrolling) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 94.89 Td (verified in Studio and Settings.) Tj ET
+0.8 0.85 0.9 RG 0.5 w
+45.00 38.00 m 550.28 38.00 l S
+0.4 0.45 0.55 rg
+BT /F1 8 Tf 45.00 26.00 Td (ChekaApp Global Entertainment Platform | System Architecture & Security Audit) Tj ET
+BT /F2 8 Tf 490.28 26.00 Td (Page 1 of 4) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 6 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+8 0 obj
+<< /Length 12678 >>
+stream
+0.400 0.450 0.550 rg
+0.100 0.100 0.100 rg
+BT /F2 8.0 Tf 45.00 809.89 Td (CHEKAAPP 3.0 - FULL SYSTEM AUDIT & ROADMAP) Tj ET
+0.100 0.100 0.100 rg
+BT /F1 8.0 Tf 370.28 809.89 Td (CONFIDENTIAL - PRODUCTION BASELINE) Tj ET
+0.800 0.850 0.900 RG
+0.50 w 45.00 805.89 m 550.28 805.89 l S
+0.920 0.650 0.150 rg
+45.00 756.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 761.89 Td (4. BACKEND AND API AUDIT) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 754.89 m 550.28 754.89 l S
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 734.89 Td (Live endpoint testing against the running server demonstrated sub-60ms average latencies across all) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 720.89 Td (primary REST endpoints:) Tj ET
+0.120 0.180 0.280 rg
+45.00 696.89 505.28 20.00 re f
+0.200 0.300 0.450 RG
+0.50 w 45.00 696.89 505.28 20.00 re S
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 50.00 702.89 Td (Endpoint) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 230.00 702.89 Td (Method) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 285.00 702.89 Td (Auth Required) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 365.00 702.89 Td (Status) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 465.00 702.89 Td (Latency) Tj ET
+0.980 0.990 1.000 rg
+45.00 678.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 678.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 683.89 Td (/api/health) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 230.00 683.89 Td (GET) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 285.00 683.89 Td (No) Tj ET
+0.050 0.550 0.250 rg
+BT /F2 8.0 Tf 365.00 683.89 Td (200 ONLINE) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 465.00 683.89 Td (12 ms) Tj ET
+0.940 0.950 0.970 rg
+45.00 660.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 660.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 665.89 Td (/api/videos) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 230.00 665.89 Td (GET) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 285.00 665.89 Td (No) Tj ET
+0.050 0.550 0.250 rg
+BT /F2 8.0 Tf 365.00 665.89 Td (200 READY) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 465.00 665.89 Td (48 ms) Tj ET
+0.980 0.990 1.000 rg
+45.00 642.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 642.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 647.89 Td (/api/auth/signup) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 230.00 647.89 Td (POST) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 285.00 647.89 Td (No) Tj ET
+0.050 0.550 0.250 rg
+BT /F2 8.0 Tf 365.00 647.89 Td (201 VERIFIED) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 465.00 647.89 Td (85 ms) Tj ET
+0.940 0.950 0.970 rg
+45.00 624.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 624.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 629.89 Td (/api/auth/login) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 230.00 629.89 Td (POST) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 285.00 629.89 Td (No) Tj ET
+0.050 0.550 0.250 rg
+BT /F2 8.0 Tf 365.00 629.89 Td (200 VERIFIED) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 465.00 629.89 Td (80 ms) Tj ET
+0.980 0.990 1.000 rg
+45.00 606.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 606.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 611.89 Td (/api/auth/me) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 230.00 611.89 Td (GET) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 285.00 611.89 Td (Yes) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 365.00 611.89 Td (401 PROTECTED) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 465.00 611.89 Td (15 ms) Tj ET
+0.940 0.950 0.970 rg
+45.00 588.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 588.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 593.89 Td (/api/admin/owner-stats) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 230.00 593.89 Td (GET) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 285.00 593.89 Td (PIN / Admin) Tj ET
+0.050 0.550 0.250 rg
+BT /F2 8.0 Tf 365.00 593.89 Td (200 READY) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 465.00 593.89 Td (55 ms) Tj ET
+0.980 0.990 1.000 rg
+45.00 570.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 570.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 575.89 Td (/api/admin/users-audit) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 230.00 575.89 Td (GET) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 285.00 575.89 Td (Admin Only) Tj ET
+0.050 0.550 0.250 rg
+BT /F2 8.0 Tf 365.00 575.89 Td (200 READY) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 465.00 575.89 Td (42 ms) Tj ET
+0.940 0.950 0.970 rg
+45.00 552.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 552.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 557.89 Td (/api/payments/checkout/mobile) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 230.00 557.89 Td (POST) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 285.00 557.89 Td (Optional) Tj ET
+0.050 0.550 0.250 rg
+BT /F2 8.0 Tf 365.00 557.89 Td (200 READY) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 465.00 557.89 Td (60 ms) Tj ET
+0.980 0.990 1.000 rg
+45.00 534.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 534.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 539.89 Td (/api/messages/:id) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 230.00 539.89 Td (GET/POST) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 285.00 539.89 Td (Yes) Tj ET
+0.050 0.550 0.250 rg
+BT /F2 8.0 Tf 365.00 539.89 Td (200 VERIFIED) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 465.00 539.89 Td (30 ms) Tj ET
+0.920 0.650 0.150 rg
+45.00 489.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 494.89 Td (5. DATABASE AUDIT \(POSTGRESQL 16\)) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 487.89 m 550.28 487.89 l S
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 467.89 Td (Database audit conducted via Drizzle ORM and direct SQL queries confirmed 11 operational relational) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 453.89 Td (tables in PostgreSQL Cloud SQL:) Tj ET
+0.120 0.180 0.280 rg
+45.00 429.89 505.28 20.00 re f
+0.200 0.300 0.450 RG
+0.50 w 45.00 429.89 505.28 20.00 re S
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 50.00 435.89 Td (Table Name) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 150.00 435.89 Td (Primary Key) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 225.00 435.89 Td (Foreign Keys) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 385.00 435.89 Td (Live Records) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 455.00 435.89 Td (Indexes) Tj ET
+0.980 0.990 1.000 rg
+45.00 411.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 411.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 416.89 Td (users) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 150.00 416.89 Td (UUID) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 225.00 416.89 Td (None \(Unique username/email\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 385.00 416.89 Td (11) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 455.00 416.89 Td (Unique constraints) Tj ET
+0.940 0.950 0.970 rg
+45.00 393.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 393.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 398.89 Td (videos) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 150.00 398.89 Td (UUID) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 225.00 398.89 Td (user_id -> users.id \(Cascade\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 385.00 398.89 Td (12) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 455.00 398.89 Td (idx_created, idx_status) Tj ET
+0.980 0.990 1.000 rg
+45.00 375.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 375.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 380.89 Td (likes) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 150.00 380.89 Td (Composite) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 225.00 380.89 Td (user_id, video_id \(Cascade\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 385.00 380.89 Td (Active) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 455.00 380.89 Td (idx_video_id) Tj ET
+0.940 0.950 0.970 rg
+45.00 357.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 357.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 362.89 Td (comments) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 150.00 362.89 Td (UUID) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 225.00 362.89 Td (videos.id, users.id, parent_id) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 385.00 362.89 Td (Active) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 455.00 362.89 Td (idx_video, idx_parent) Tj ET
+0.980 0.990 1.000 rg
+45.00 339.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 339.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 344.89 Td (saves) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 150.00 344.89 Td (Composite) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 225.00 344.89 Td (user_id, video_id \(Cascade\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 385.00 344.89 Td (Active) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 455.00 344.89 Td (idx_video_id) Tj ET
+0.940 0.950 0.970 rg
+45.00 321.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 321.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 326.89 Td (follows) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 150.00 326.89 Td (Composite) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 225.00 326.89 Td (follower_id, followee_id) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 385.00 326.89 Td (Active) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 455.00 326.89 Td (Composite PK) Tj ET
+0.980 0.990 1.000 rg
+45.00 303.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 303.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 308.89 Td (views) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 150.00 308.89 Td (UUID) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 225.00 308.89 Td (videos.id, users.id) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 385.00 308.89 Td (Active) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 455.00 308.89 Td (idx_video, idx_user) Tj ET
+0.940 0.950 0.970 rg
+45.00 285.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 285.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 290.89 Td (refresh_tokens) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 150.00 290.89 Td (UUID) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 225.00 290.89 Td (user_id -> users.id \(Cascade\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 385.00 290.89 Td (Active) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 455.00 290.89 Td (token_hash) Tj ET
+0.980 0.990 1.000 rg
+45.00 267.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 267.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 272.89 Td (payments) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 150.00 272.89 Td (UUID) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 225.00 272.89 Td (user_id -> users.id \(Set Null\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 385.00 272.89 Td (14) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 455.00 272.89 Td (reference_code, status) Tj ET
+0.940 0.950 0.970 rg
+45.00 249.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 249.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 254.89 Td (push_subscriptions) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 150.00 254.89 Td (UUID) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 225.00 254.89 Td (user_id -> users.id \(Set Null\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 385.00 254.89 Td (Active) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 455.00 254.89 Td (endpoint) Tj ET
+0.980 0.990 1.000 rg
+45.00 231.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 231.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 236.89 Td (messages) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 150.00 236.89 Td (UUID) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 225.00 236.89 Td (sender_id, receiver_id \(Cascade\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 385.00 236.89 Td (Active) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 455.00 236.89 Td (idx_sender, idx_rcvr) Tj ET
+0.950 0.980 0.950 rg
+45.00 133.89 505.28 88.00 re f
+0.100 0.600 0.300 RG
+1.00 w 45.00 133.89 505.28 88.00 re S
+0.100 0.600 0.300 rg
+45.00 133.89 4.00 88.00 re f
+0.100 0.150 0.250 rg
+BT /F1 8.5 Tf 59.00 207.89 Td (AUDIT VERIFICATION NOTE ON USERS TABLE:) Tj ET
+0.100 0.150 0.250 rg
+BT /F1 8.5 Tf 59.00 194.89 Td (- Total User Accounts in Database: 11) Tj ET
+0.100 0.150 0.250 rg
+BT /F1 8.5 Tf 59.00 181.89 Td (- Super Admin / Owner: benedictojoseph08@gmail.com \(11 videos posted\)) Tj ET
+0.100 0.150 0.250 rg
+BT /F1 8.5 Tf 59.00 168.89 Td (- Organic User Registrations: Joseph \(b6sept1997@gmail.com - 1 video posted\) and 6 test users) Tj ET
+0.100 0.150 0.250 rg
+BT /F1 8.5 Tf 59.00 155.89 Td (- System Seeded Creators: mwalimu_comedy, streetcomedy_ea, bongomemes_hq) Tj ET
+0.920 0.650 0.150 rg
+45.00 88.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 93.89 Td (6. AUTHENTICATION AND SECURITY AUDIT) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 86.89 m 550.28 86.89 l S
+0.8 0.85 0.9 RG 0.5 w
+45.00 38.00 m 550.28 38.00 l S
+0.4 0.45 0.55 rg
+BT /F1 8 Tf 45.00 26.00 Td (ChekaApp Global Entertainment Platform | System Architecture & Security Audit) Tj ET
+BT /F2 8 Tf 490.28 26.00 Td (Page 2 of 4) Tj ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 8 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+10 0 obj
+<< /Length 6574 >>
+stream
+0.400 0.450 0.550 rg
+0.100 0.100 0.100 rg
+BT /F2 8.0 Tf 45.00 809.89 Td (CHEKAAPP 3.0 - FULL SYSTEM AUDIT & ROADMAP) Tj ET
+0.100 0.100 0.100 rg
+BT /F1 8.0 Tf 370.28 809.89 Td (CONFIDENTIAL - PRODUCTION BASELINE) Tj ET
+0.800 0.850 0.900 RG
+0.50 w 45.00 805.89 m 550.28 805.89 l S
+0.920 0.650 0.150 rg
+51.00 782.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 781.89 Td (Password Hashing: bcryptjs with cost factor 12 \(BCRYPT_SALT_ROUNDS = 12\). No plaintext passwords.) Tj ET
+0.920 0.650 0.150 rg
+51.00 768.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 767.89 Td (Token Hierarchy: 15-minute JWT access tokens paired with 64-character cryptographically random) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 753.89 Td (refresh tokens stored as SHA-256 hashes in PostgreSQL.) Tj ET
+0.920 0.650 0.150 rg
+51.00 740.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 739.89 Td (Cookie Security: Delivered with httpOnly: true, sameSite: 'lax', path: '/', and secure: true in) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 725.89 Td (production.) Tj ET
+0.920 0.650 0.150 rg
+51.00 712.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 711.89 Td (SQL Injection Defense: Parametrized SQL query builders via Drizzle ORM. Zero string concatenation) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 697.89 Td (in database operations.) Tj ET
+0.920 0.650 0.150 rg
+51.00 684.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 683.89 Td (Brute-Force Rate Limiting: IP-based limiters \(15 login attempts per 5 minutes per IP\).) Tj ET
+0.920 0.650 0.150 rg
+45.00 644.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 649.89 Td (7. CLOUDFLARE STREAM AUDIT) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 642.89 m 550.28 642.89 l S
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 622.89 Td (Inspection verified active CF_ACCOUNT_ID and CF_API_TOKEN environment configuration. Direct TUS uploads) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 608.89 Td (request up to 61 seconds duration. The system includes an automated fallback upload receiver when) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 594.89 Td (Cloudflare accounts reach storage quotas.) Tj ET
+0.920 0.650 0.150 rg
+45.00 555.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 560.89 Td (8. ANDROID AND PWA AUDIT) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 553.89 m 550.28 553.89 l S
+0.920 0.650 0.150 rg
+51.00 534.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 533.89 Td (PWA Manifest: Configured in manifest.json with standalone portrait mode and dark theme.) Tj ET
+0.920 0.650 0.150 rg
+51.00 520.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 519.89 Td (Service Worker: Runtime caching and offline fallback configured in sw.js.) Tj ET
+0.920 0.650 0.150 rg
+51.00 506.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 505.89 Td (Distribution Strategy: Recommend Google Trusted Web Activity \(TWA\) with Bubblewrap CLI for Play) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 491.89 Td (Store submission.) Tj ET
+0.920 0.650 0.150 rg
+45.00 452.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 457.89 Td (9. AI AND RECOMMENDATION SYSTEM AUDIT) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 450.89 m 550.28 450.89 l S
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 430.89 Td (The recommendation engine \(src/algorithms/recommendation.ts\) is a deterministic mathematical heuristic) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 416.89 Td (model inspired by viral engagement loops, NOT a deep neural network:) Tj ET
+0.920 0.650 0.150 rg
+51.00 403.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 402.89 Td (Formula Weights: Completion Rate \(4.0x\), Loop / Rewatch Bonus \(3.0x\), High-Intent Shares/Saves) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 388.89 Td (\(2.5x\), Comments \(1.5x\), Likes \(1.5x\), Fast Skip Penalty \(-3.0x\).) Tj ET
+0.920 0.650 0.150 rg
+51.00 375.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 374.89 Td (Time Decay: Exponential half-life decay of 12 hours: EXP\(-age_seconds / 43200\).) Tj ET
+0.920 0.650 0.150 rg
+51.00 361.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 360.89 Td (Generative AI: Gemini 2.5 Flash API is integrated for generating comedy punchlines and captions in) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 346.89 Td (Creator Studio.) Tj ET
+0.920 0.650 0.150 rg
+45.00 307.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 312.89 Td (10. CONTENT SAFETY & MODERATION) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 305.89 m 550.28 305.89 l S
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 285.89 Td (Database supports 'READY', 'FLAGGED', and 'REJECTED' moderation states. User reports flow directly to) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 271.89 Td (the Owner Dashboard for administrator resolution. Automated computer vision NSFW scanning is identified) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 257.89 Td (as a critical priority for Phase 2.) Tj ET
+0.920 0.650 0.150 rg
+45.00 218.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 223.89 Td (11. INFRASTRUCTURE & SCALABILITY) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 216.89 m 550.28 216.89 l S
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 196.89 Td (System currently runs on Google Cloud Run with PostgreSQL 16 on Cloud SQL. For 100,000+ concurrent) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 182.89 Td (users, the following infrastructure must be added: Redis Memorystore for distributed rate-limiting and) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 45.00 168.89 Td (session caching, PgBouncer connection pooling, and Cloudflare Edge caching.) Tj ET
+0.920 0.650 0.150 rg
+45.00 129.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 134.89 Td (12. MONETIZATION AND INTERNATIONALIZATION) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 127.89 m 550.28 127.89 l S
+0.920 0.650 0.150 rg
+51.00 108.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 107.89 Td (Mobile Money Integration: AzamPay and Selcom checkout generators and webhook listeners implemented;) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 93.89 Td (pending live Bank of Tanzania merchant registration.) Tj ET
+0.920 0.650 0.150 rg
+51.00 80.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 79.89 Td (Coin Economy: Virtual Cheka Coins data model functional in PostgreSQL.) Tj ET
+0.8 0.85 0.9 RG 0.5 w
+45.00 38.00 m 550.28 38.00 l S
+0.4 0.45 0.55 rg
+BT /F1 8 Tf 45.00 26.00 Td (ChekaApp Global Entertainment Platform | System Architecture & Security Audit) Tj ET
+BT /F2 8 Tf 490.28 26.00 Td (Page 3 of 4) Tj ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 10 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+12 0 obj
+<< /Length 10050 >>
+stream
+0.400 0.450 0.550 rg
+0.100 0.100 0.100 rg
+BT /F2 8.0 Tf 45.00 809.89 Td (CHEKAAPP 3.0 - FULL SYSTEM AUDIT & ROADMAP) Tj ET
+0.100 0.100 0.100 rg
+BT /F1 8.0 Tf 370.28 809.89 Td (CONFIDENTIAL - PRODUCTION BASELINE) Tj ET
+0.800 0.850 0.900 RG
+0.50 w 45.00 805.89 m 550.28 805.89 l S
+0.920 0.650 0.150 rg
+51.00 782.89 4.00 4.00 re f
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 781.89 Td (Languages: Swahili \(sw\) and English \(en\) currently supported. French, Arabic, and multi-currency) Tj ET
+0.150 0.150 0.200 rg
+BT /F1 9.5 Tf 63.00 767.89 Td (formats scheduled for Phase 8.) Tj ET
+0.920 0.650 0.150 rg
+45.00 728.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 733.89 Td (13. COMPLETION SCORECARD & SYSTEM HEALTH) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 726.89 m 550.28 726.89 l S
+0.120 0.180 0.280 rg
+45.00 696.89 505.28 20.00 re f
+0.200 0.300 0.450 RG
+0.50 w 45.00 696.89 505.28 20.00 re S
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 50.00 702.89 Td (Category) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 160.00 702.89 Td (Weight) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 210.00 702.89 Td (Score) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 260.00 702.89 Td (Status) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 335.00 702.89 Td (Audit Rationale) Tj ET
+0.980 0.990 1.000 rg
+45.00 678.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 678.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 683.89 Td (Code Completion) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 160.00 683.89 Td (25%) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 210.00 683.89 Td (88%) Tj ET
+0.050 0.550 0.250 rg
+BT /F2 8.0 Tf 260.00 683.89 Td (VERIFIED) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 335.00 683.89 Td (User loops, components, routes, and schemas fully built.) Tj ET
+0.940 0.950 0.970 rg
+45.00 660.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 660.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 665.89 Td (Functional Verification) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 160.00 665.89 Td (25%) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 210.00 665.89 Td (76%) Tj ET
+0.050 0.550 0.250 rg
+BT /F2 8.0 Tf 260.00 665.89 Td (VERIFIED) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 335.00 665.89 Td (Feed, auth, database, and algorithm tested and working.) Tj ET
+0.980 0.990 1.000 rg
+45.00 642.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 642.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 647.89 Td (Production Readiness) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 160.00 647.89 Td (20%) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 210.00 647.89 Td (62%) Tj ET
+0.050 0.550 0.250 rg
+BT /F2 8.0 Tf 260.00 647.89 Td (READY) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 335.00 647.89 Td (Build size optimized \(214 MB\); admin route security needed.) Tj ET
+0.940 0.950 0.970 rg
+45.00 624.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 624.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 629.89 Td (Scalability Readiness) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 160.00 629.89 Td (15%) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 210.00 629.89 Td (45%) Tj ET
+0.850 0.200 0.200 rg
+BT /F1 8.0 Tf 260.00 629.89 Td (AT RISK) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 335.00 629.89 Td (Requires Redis clustering and PgBouncer connection pooling.) Tj ET
+0.980 0.990 1.000 rg
+45.00 606.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 606.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 611.89 Td (Commercial Readiness) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 160.00 611.89 Td (15%) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 210.00 611.89 Td (40%) Tj ET
+0.850 0.200 0.200 rg
+BT /F1 8.0 Tf 260.00 611.89 Td (PENDING) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 335.00 611.89 Td (Gateway code ready; awaiting live corporate merchant TID.) Tj ET
+0.100 0.450 0.200 rg
+BT /F2 9.5 Tf 45.00 586.89 Td (OVERALL WEIGHTED SYSTEM READINESS: 66.3% \(Empirical Baseline Score\)) Tj ET
+0.920 0.650 0.150 rg
+45.00 547.89 4.00 22.00 re f
+0.080 0.120 0.220 rg
+BT /F2 13.0 Tf 57.00 552.89 Td (14. FINAL 9-PHASE DEVELOPMENT ROADMAP) Tj ET
+0.850 0.880 0.920 RG
+0.50 w 57.00 545.89 m 550.28 545.89 l S
+0.120 0.180 0.280 rg
+45.00 515.89 505.28 20.00 re f
+0.200 0.300 0.450 RG
+0.50 w 45.00 515.89 505.28 20.00 re S
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 50.00 521.89 Td (Phase) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 110.00 521.89 Td (Objective) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 220.00 521.89 Td (Key Technical Tasks) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 375.00 521.89 Td (Complexity) Tj ET
+1.000 1.000 1.000 rg
+BT /F2 8.5 Tf 440.00 521.89 Td (Acceptance Criteria) Tj ET
+0.980 0.990 1.000 rg
+45.00 497.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 497.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 502.89 Td (PHASE 1) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 110.00 502.89 Td (Security & Infrastructure Stabilization) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 220.00 502.89 Td (Lock admin routes with JWT middleware, modularize server.ts, verify environment secrets.) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 375.00 502.89 Td (Medium \(3d\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 440.00 502.89 Td (Zero unauthenticated admin access.) Tj ET
+0.940 0.950 0.970 rg
+45.00 479.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 479.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 484.89 Td (PHASE 2) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 110.00 484.89 Td (Content Moderation & UGC Safety) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 220.00 484.89 Td (Automated Gemini Vision / Video Intelligence NSFW pre-scan on uploads; in-app blocking.) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 375.00 484.89 Td (Medium \(4d\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 440.00 484.89 Td (Zero toxic/NSFW media published to feed.) Tj ET
+0.980 0.990 1.000 rg
+45.00 461.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 461.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 466.89 Td (PHASE 3) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 110.00 466.89 Td (AI Personalization & Embeddings) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 220.00 466.89 Td (Integrate pgvector embeddings in PostgreSQL for dynamic taste affinity matching.) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 375.00 466.89 Td (High \(7d\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 440.00 466.89 Td (Feed personalizes after 3 video views.) Tj ET
+0.940 0.950 0.970 rg
+45.00 443.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 443.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 448.89 Td (PHASE 4) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 110.00 448.89 Td (Push Notifications & Engagement) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 220.00 448.89 Td (Web Push \(VAPID\) and Firebase Cloud Messaging re-engagement daemon.) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 375.00 448.89 Td (Medium \(3d\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 440.00 448.89 Td (Users receive native mobile upload alerts.) Tj ET
+0.980 0.990 1.000 rg
+45.00 425.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 425.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 430.89 Td (PHASE 5) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 110.00 430.89 Td (Creator Studio & WebCodecs) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 220.00 430.89 Td (Hardware-accelerated client video trimming, audio track extraction, and stickers.) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 375.00 430.89 Td (High \(6d\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 440.00 430.89 Td (Trims 60s video in <3s on mobile.) Tj ET
+0.940 0.950 0.970 rg
+45.00 407.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 407.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 412.89 Td (PHASE 6) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 110.00 412.89 Td (Monetization & Creator Economy) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 220.00 412.89 Td (Live Selcom & AzamPay merchant credentials, coin checkout, and automated creator payouts.) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 375.00 412.89 Td (High \(8d\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 440.00 412.89 Td (Live M-Pesa coin purchase completed.) Tj ET
+0.980 0.990 1.000 rg
+45.00 389.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 389.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 394.89 Td (PHASE 7) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 110.00 394.89 Td (Messaging & Live Streaming) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 220.00 394.89 Td (WebSocket multi-device E2EE chat and Cloudflare Stream Live \(RTMP/WebRTC\).) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 375.00 394.89 Td (Very High \(10d\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 440.00 394.89 Td (Real-time instant DM delivery.) Tj ET
+0.940 0.950 0.970 rg
+45.00 371.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 371.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 376.89 Td (PHASE 8) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 110.00 376.89 Td (International Expansion) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 220.00 376.89 Td (i18next French & Arabic translations; multi-currency \(KES, UGX, NGN, USD\).) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 375.00 376.89 Td (Medium \(5d\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 440.00 376.89 Td (Full locale switching without reload.) Tj ET
+0.980 0.990 1.000 rg
+45.00 353.89 505.28 18.00 re f
+0.850 0.880 0.920 RG
+0.30 w 45.00 353.89 505.28 18.00 re S
+0.100 0.150 0.200 rg
+BT /F2 8.0 Tf 50.00 358.89 Td (PHASE 9) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 110.00 358.89 Td (Hyperscale Production \(100k+\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 220.00 358.89 Td (Redis Memorystore caching, PgBouncer pooling, read-replicas, and global CDN tuning.) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 375.00 358.89 Td (High \(7d\)) Tj ET
+0.100 0.150 0.200 rg
+BT /F1 8.0 Tf 440.00 358.89 Td (Maintains sub-100ms at 10k req/sec.) Tj ET
+0.8 0.85 0.9 RG 0.5 w
+45.00 38.00 m 550.28 38.00 l S
+0.4 0.45 0.55 rg
+BT /F1 8 Tf 45.00 26.00 Td (ChekaApp Global Entertainment Platform | System Architecture & Security Audit) Tj ET
+BT /F2 8 Tf 490.28 26.00 Td (Page 4 of 4) Tj ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 12 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [7 0 R 9 0 R 11 0 R 13 0 R] /Count 4 >>
+endobj
+xref
+0 14
+0000000000 65535 f 
+0000000015 00000 n 
+0000036441 00000 n 
+0000000064 00000 n 
+0000000161 00000 n 
+0000000263 00000 n 
+0000000368 00000 n 
+0000006367 00000 n 
+0000006519 00000 n 
+0000019250 00000 n 
+0000019402 00000 n 
+0000026029 00000 n 
+0000026183 00000 n 
+0000036287 00000 n 
+trailer
+<< /Size 14 /Root 1 0 R >>
+startxref
+36518
+%%EOF

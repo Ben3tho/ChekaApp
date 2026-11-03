@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.chekaapp.reels",
+      "sha256_cert_fingerprints": [
+        "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C",
+        "14:6D:E9:7D:0C:52:AB:70:02:81:7A:4E:E8:EF:5E:DF:99:B4:44:B3:52:13:54:1E:14:26:11:4E:EB:3B:11:05"
+      ]
+    }
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "name": "Cheka - Meme Reels & Architecture Hub",
+  "description": "Msingi imara wa app ya meme na funny short reels ya Kiswahili: vertical feed, creator studio, recommendation engine, na tech stack architecture.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

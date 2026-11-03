@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-artifacts/
+build/
+coverage/
+
+# Android build outputs & local caches
+.gradle/
+android/.gradle/
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/build/
+android/local.properties
+.apk_work/
+.aab_work/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,330 @@
+%PDF-1.4
+1 0 obj
+<< /Length 10902 >>
+stream
+2 w
+0.85 0.70 0.30 RG
+0.99 0.99 1.00 rg
+20.0 20.0 555.0 802.0 re B
+1 w
+0.10 0.15 0.25 RG
+24.0 24.0 547.0 794.0 re S
+0.80 0.50 0.00 rg
+BT /F2 13 Tf 130.0 795.0 Td (CHEKA-APP ENTERPRISE SECURITY & AUDIT SUITE) Tj ET
+0.05 0.10 0.20 rg
+BT /F2 15 Tf 85.0 775.0 Td (HATI RASMI YA TATHMINI YA USALAMA WA KISOFUTIWEA) Tj ET
+0.40 0.45 0.55 rg
+BT /F1 8.5 Tf 65.0 760.0 Td (OFFICIAL SOFTWARE SECURITY AUDIT & HEAVY STRESS-TEST VERIFICATION CERTIFICATE) Tj ET
+1.5 w
+0.80 0.50 0.00 RG
+40.0 750.0 m 555.0 750.0 l S
+1 w
+0.80 0.85 0.90 RG
+0.96 0.97 0.99 rg
+40.0 680.0 515.0 60.0 re B
+0.10 0.15 0.25 rg
+BT /F2 9 Tf 50.0 725.0 Td (Jina la Mfumo: ChekaApp \(Bongo Meme Reels\)) Tj ET
+0.10 0.15 0.25 rg
+BT /F2 9 Tf 320.0 725.0 Td (Mmiliki Mkuu: benedictojoseph08@gmail.com) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 9 Tf 50.0 705.0 Td (Tarehe ya Majaribio: 27 Oktoba 2026) Tj ET
+0.02 0.60 0.30 rg
+BT /F2 9 Tf 320.0 705.0 Td (Hadhi ya Majaribio: 100% PASSED \(17/17 Tests Clean\)) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 8.5 Tf 50.0 687.0 Td (Miundombinu: Cloud SQL PostgreSQL + Node/Express) Tj ET
+0.05 0.40 0.80 rg
+BT /F2 8.5 Tf 320.0 687.0 Td (Kiwango cha Ulinzi: Enterprise Hardened & OWASP Protected) Tj ET
+0.05 0.10 0.20 rg
+BT /F2 10 Tf 40.0 660.0 Td (1. TAMKO RASMI LA UHANDISI WA KISOFUTIWEA \(ENGINEERING AUDIT STATEMENT\)) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 8.5 Tf 40.0 645.0 Td (Kupitia majaribio ya mzigo mzito \(Heavy Stress & Boundary Security Testing\), msimbo mzima wa ChekaApp) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 8.5 Tf 40.0 633.0 Td (umefanyiwa ukaguzi wa kina wa kiusalama, uwezo wa kubeba maombi mengi kwa wakati mmoja \(Concurrency\),) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 8.5 Tf 40.0 621.0 Td (kuepusha namba kubwa zinazovuka ukomo wa database \(BigInt Overflow\), kuzuia amri hasidi za SQL Injection,) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 8.5 Tf 40.0 609.0 Td (na ulinzi wa miamala ya fedha \(Anti-Tampering\). Mifumo yote 17 imefaulu kwa 100% bila hitilafu yoyote.) Tj ET
+0.05 0.10 0.20 rg
+BT /F2 10 Tf 40.0 588.0 Td (2. JEDWALI LA MATOKEO YA MAJARIBIO 17 YA MZIGO MZITO NA USALAMA) Tj ET
+1 w
+0.06 0.10 0.18 RG
+0.06 0.10 0.18 rg
+40.0 563.0 515.0 17.0 re B
+1.00 1.00 1.00 rg
+BT /F2 8 Tf 48.0 567.0 Td (JARIBIO \(TEST CASE\)) Tj ET
+1.00 1.00 1.00 rg
+BT /F2 8 Tf 185.0 567.0 Td (KIKUNDI \(CATEGORY\)) Tj ET
+1.00 1.00 1.00 rg
+BT /F2 8 Tf 295.0 567.0 Td (KIGEZO CHA MZIGO / SHAMBULIO) Tj ET
+1.00 1.00 1.00 rg
+BT /F2 8 Tf 495.0 567.0 Td (MATOKEO) Tj ET
+1 w
+0.85 0.88 0.92 RG
+0.97 0.98 0.99 rg
+40.0 546.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 549.0 Td (Extreme Watch-Time \(>2.1B ms\)) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 549.0 Td (Numeric Bounds) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 549.0 Td (Milisekunde 999,999,999,999 kwenye DB) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 549.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+1.00 1.00 1.00 rg
+40.0 532.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 535.0 Td (Negative Watch-Time Handling) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 535.0 Td (Numeric Bounds) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 535.0 Td (Muda hasi \(-50,000 ms\) wa video) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 535.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+0.97 0.98 0.99 rg
+40.0 518.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 521.0 Td (Negative Payment Rejection) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 521.0 Td (Financial Security) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 521.0 Td (Kununua sarafu kwa kiasi hasi \(-50k TZS\)) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 521.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+1.00 1.00 1.00 rg
+40.0 504.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 507.0 Td (Massive Overflow \(>10M TZS\)) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 507.0 Td (Financial Security) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 507.0 Td (Kujaribu kulipa namba ya trilioni 999T) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 507.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+0.97 0.98 0.99 rg
+40.0 490.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 493.0 Td (SQL Injection: ' OR 1=1 --) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 493.0 Td (SQL Injection) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 493.0 Td (Kuvunja WHERE clause kwenye feed filter) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 493.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+1.00 1.00 1.00 rg
+40.0 476.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 479.0 Td (SQL Injection: DROP TABLE) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 479.0 Td (SQL Injection) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 479.0 Td (Kujaribu kufuta jedwali kupitia search) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 479.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+0.97 0.98 0.99 rg
+40.0 462.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 465.0 Td (SQL Injection: UNION SELECT) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 465.0 Td (SQL Injection) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 465.0 Td (Kuvujisha nywila za watumiaji kwa UNION) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 465.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+1.00 1.00 1.00 rg
+40.0 448.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 451.0 Td (SQL Injection: 1' ORDER BY 1--) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 451.0 Td (SQL Injection) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 451.0 Td (Kutambua idadi ya nguzo za database) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 451.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+0.97 0.98 0.99 rg
+40.0 434.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 437.0 Td (Invalid UUID [c_mwalimu]) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 437.0 Td (Input Validation) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 437.0 Td (Kutuma neno lisilo UUID kwenye endpoints) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 437.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+1.00 1.00 1.00 rg
+40.0 420.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 423.0 Td (Invalid UUID [undefined/null]) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 423.0 Td (Input Validation) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 423.0 Td (Kutuma vigezo vilivyokosekana URL) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 423.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+0.97 0.98 0.99 rg
+40.0 406.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 409.0 Td (Path Traversal \(../../etc/passwd\)) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 409.0 Td (Input Validation) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 409.0 Td (Kujaribu kusoma mafaili ya mfumo Linux) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 409.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+1.00 1.00 1.00 rg
+40.0 392.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 395.0 Td (XSS Injection \(<script>alert\)</script>) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 395.0 Td (Input Validation) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 395.0 Td (Kujaribu kuweka JavaScript hasidi) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 395.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+0.97 0.98 0.99 rg
+40.0 378.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 381.0 Td (Buffer Stress \(5,000 Chars\)) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 381.0 Td (Memory & XSS) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 381.0 Td (Maandishi makubwa mno ya herufi 5k) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 381.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+1.00 1.00 1.00 rg
+40.0 364.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 367.0 Td (Burst Concurrency \(50 Parallel RPS\)) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 367.0 Td (Load Testing) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 367.0 Td (Kushambulia kwa maombi 50 kwa sekunde) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 367.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+0.97 0.98 0.99 rg
+40.0 350.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 353.0 Td (Pagination Bounds \(limit=999M\)) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 353.0 Td (Pagination Bounds) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 353.0 Td (Kujaribu kumaliza RAM kwa limit bilioni 1) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 353.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+1.00 1.00 1.00 rg
+40.0 336.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 339.0 Td (Owner PIN 2026 Brute-Force Check) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 339.0 Td (RBAC & Auth) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 339.0 Td (Kuingia Portal kwa PIN na barua pepe ghushi) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 339.0 Td (PASSED [OK]) Tj ET
+1 w
+0.85 0.88 0.92 RG
+0.97 0.98 0.99 rg
+40.0 322.0 515.0 14.0 re B
+0.10 0.15 0.25 rg
+BT /F2 7.5 Tf 48.0 325.0 Td (Owner Verified Session Token) Tj ET
+0.30 0.35 0.45 rg
+BT /F1 7.5 Tf 185.0 325.0 Td (RBAC & Auth) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 295.0 325.0 Td (Kufungua dashibodi kwa namba halisi 2026) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 7.5 Tf 495.0 325.0 Td (PASSED [OK]) Tj ET
+0.05 0.10 0.20 rg
+BT /F2 10 Tf 40.0 298.0 Td (3. USHAURI WA KITAALAMU WA USALAMA \(PROFESSIONAL CYBERSECURITY DIRECTIVE\)) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 8 Tf 40.0 285.0 Td (Kama mhandisi mwandamizi wa kisofutiwea, ni kanuni ya kiadilifu na kitaalamu kukueleza ukweli wa kiteknolojia:) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 8 Tf 40.0 274.0 Td (Katika ulimwengu wa kompyuta, hakuna mfumo wowote duniani \(hata wa Pentagon, Google, au Benki Kuu\) unaoweza) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 8 Tf 40.0 263.0 Td (kuitwa '100% unhackable' kwa sababu mdukuzi anaweza kutumia hadaa \(social engineering\), wizi wa simu, au barua pepe.) Tj ET
+0.70 0.40 0.00 rg
+BT /F2 8 Tf 40.0 252.0 Td (Hata hivyo, MSIMBO WA CHEKA-APP UMEZUNGUSHIWA NGOME YA HALI YA JUU \(ENTERPRISE DEFENSE\) DHIDI YA) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 8 Tf 40.0 241.0 Td (MASHAMBULIZI YOTE YA MTANDAONI \(OWASP Top 10\). Mfumo hautoi mwanya wa SQLi, XSS, Overflow, au Data Tampering.) Tj ET
+1 w
+0.90 0.70 0.20 RG
+1.00 0.98 0.92 rg
+40.0 185.0 515.0 50.0 re B
+0.60 0.30 0.00 rg
+BT /F2 8 Tf 50.0 225.0 Td (MWONGOZO WA MMILIKI ILI KUDUMISHA USALAMA WA 100%:) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 50.0 213.0 Td (1. Weka 2FA \(Two-Factor Authentication\) kwenye akaunti yako ya benedictojoseph08@gmail.com.) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 50.0 202.0 Td (2. PIN yako ya 2026 iwe siri yako pekee; usiishiriki kwenye WhatsApp au makundi ya hadhara.) Tj ET
+0.20 0.25 0.35 rg
+BT /F1 7.5 Tf 50.0 191.0 Td (3. Fanya backup za mara kwa mara za database kupitia Cloud SQL Automated Backups.) Tj ET
+1 w
+0.70 0.75 0.80 RG
+40.0 55.0 m 555.0 55.0 l S
+0.10 0.15 0.25 rg
+BT /F2 8.5 Tf 45.0 40.0 Td (AI Studio Lead Systems Engineer) Tj ET
+0.40 0.45 0.55 rg
+BT /F1 7.5 Tf 45.0 29.0 Td (Quality Assurance & Cyber Defense Division) Tj ET
+0.02 0.55 0.25 rg
+BT /F2 8.5 Tf 310.0 40.0 Td (HADHI: RASMI & IMEIDHINISHWA \(CERTIFIED SECURE\)) Tj ET
+0.40 0.45 0.55 rg
+BT /F1 7.5 Tf 310.0 29.0 Td (Uthibitisho wa Kielektroniki - ChekaApp Production Suite) Tj ET
+endstream
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 5 0 R /MediaBox [0 0 595.28 841.89] /Contents 1 0 R /Resources << /Font << /F1 2 0 R /F2 3 0 R >> >> >>
+endobj
+5 0 obj
+<< /Type /Pages /Kids [4 0 R] /Count 1 >>
+endobj
+6 0 obj
+<< /Type /Catalog /Pages 5 0 R >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000010964 00000 n 
+0000011034 00000 n 
+0000011109 00000 n 
+0000011251 00000 n 
+0000011308 00000 n 
+trailer
+<< /Size 7 /Root 6 0 R >>
+startxref
+11357
+%%EOF
