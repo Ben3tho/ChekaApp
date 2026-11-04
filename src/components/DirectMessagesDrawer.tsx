@@ -39,51 +39,6 @@ interface DirectMessagesDrawerProps {
   userCoins?: number;
 }
 
-const INITIAL_CONVERSATIONS: { creator: Creator; lastMessage: string; time: string; unread: number }[] = [
-  {
-    creator: {
-      id: 'c_mwalimu',
-      name: 'Mwalimu wa Memes',
-      username: 'mwalimu_memes',
-      avatar: '/src/assets/images/swahili_comedian_avatar_1792057038016.jpg',
-      bio: 'Vichekesho vya Dar na maisha ya kila siku 😂',
-      verified: true,
-      followersCount: 14200,
-    },
-    lastMessage: 'Aisee asante sana kwa zawadi ya Chai! Tuko pamoja sana kiongozi 🔥',
-    time: 'Dakika 5 zilizopita',
-    unread: 1,
-  },
-  {
-    creator: {
-      id: 'c_chuga',
-      name: 'Chuga Comedy King',
-      username: 'chuga_vibes',
-      avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Chuga',
-      bio: 'Watu wa Arusha na vicheko vya Chuga 🏔️',
-      verified: true,
-      followersCount: 9800,
-    },
-    lastMessage: 'Part 2 ya ile video ya Daladala inashuka leo jioni! Usikose kuitazama 🚐😂',
-    time: 'Saa 2 zilizopita',
-    unread: 0,
-  },
-  {
-    creator: {
-      id: 'c_mama',
-      name: 'Mama Dangote Memes',
-      username: 'mama_dangote_comedy',
-      avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Mama',
-      bio: 'Vicheko vya kishari na uswahilini 🎭',
-      verified: false,
-      followersCount: 6500,
-    },
-    lastMessage: 'Hahaha umenichekesha sana na ule ujumbe wako! 😂',
-    time: 'Jana',
-    unread: 0,
-  },
-];
-
 const QUICK_REACTIONS = ['😂😂😂', '🔥 Hatari sana!', 'Umenivunja mbavu! 💀', 'Fanya Part 2! 🎬', 'Big up kiongozi! 🙌'];
 
 export const DirectMessagesDrawer: React.FC<DirectMessagesDrawerProps> = ({
@@ -96,17 +51,8 @@ export const DirectMessagesDrawer: React.FC<DirectMessagesDrawerProps> = ({
 }) => {
   const { authFetch, user } = useAuth();
   const [activeChatCreator, setActiveChatCreator] = useState<Creator | null>(targetCreator || null);
-  const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({
-    'mwalimu_memes': [
-      { id: '1', sender: 'them', text: 'Mambo vipi kiongozi! Karibu sana kwenye ukurasa wangu.', timestamp: '14:20' },
-      { id: '2', sender: 'me', text: 'Poa sana Mwalimu! Ile video yako ya daladala imeniacha hoi 😂😂😂', timestamp: '14:22' },
-      { id: '3', sender: 'them', text: 'Aisee asante sana kwa zawadi ya Chai! Tuko pamoja sana kiongozi 🔥', timestamp: '14:25' },
-    ],
-    'chuga_vibes': [
-      { id: '1', sender: 'them', text: 'Wazazi wangu wa Chuga! Mko poa?', timestamp: '11:00' },
-      { id: '2', sender: 'me', text: 'Tuko salama bro, endelea kutupa vicheko vya Chuga! 🙌', timestamp: '11:05' },
-    ],
-  });
+  const [conversations, setConversations] = useState<{ creator: Creator; lastMessage: string; time: string; unread: number }[]>([]);
+  const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
 
   const [inputVal, setInputVal] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -366,40 +312,56 @@ export const DirectMessagesDrawer: React.FC<DirectMessagesDrawerProps> = ({
               <span>{language === 'sw' ? 'Mazungumzo Yako' : 'Conversations'}</span>
             </div>
 
-            {INITIAL_CONVERSATIONS.map(({ creator, lastMessage, time, unread }) => (
-              <div
-                key={creator.id}
-                onClick={() => {
-                  setActiveChatCreator(creator);
-                  memeAudio.playPop();
-                }}
-                className="p-3 rounded-2xl bg-neutral-950/70 border border-neutral-800/80 hover:border-amber-400/50 cursor-pointer flex items-center gap-3 transition-all hover:bg-neutral-950"
-              >
-                <div className="relative shrink-0">
-                  <img
-                    src={creator.avatar}
-                    alt={creator.name}
-                    className="w-12 h-12 rounded-full object-cover border border-amber-500/30"
-                  />
-                  <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-neutral-950" />
+            {conversations.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-neutral-800/60 border border-neutral-700/60 flex items-center justify-center text-neutral-400 mb-3">
+                  <MessageCircle className="w-7 h-7 text-amber-400/80" />
                 </div>
-                <div className="flex-1 min-w-0 text-left">
-                  <div className="flex items-center justify-between mb-0.5">
-                    <span className="text-xs font-bold text-white truncate flex items-center gap-1">
-                      {creator.name}
-                      {creator.verified && <span className="text-[9px] text-amber-400">✓</span>}
-                    </span>
-                    <span className="text-[10px] text-neutral-500 font-mono">{time}</span>
-                  </div>
-                  <p className="text-xs text-neutral-400 truncate">{lastMessage}</p>
-                </div>
-                {unread > 0 && (
-                  <span className="w-5 h-5 rounded-full bg-amber-500 text-neutral-950 text-[10px] font-bold flex items-center justify-center shrink-0">
-                    {unread}
-                  </span>
-                )}
+                <h3 className="text-sm font-bold text-white mb-1">
+                  {language === 'sw' ? 'Hakuna Meseji Bado' : 'No Messages Yet'}
+                </h3>
+                <p className="text-xs text-neutral-400 max-w-xs">
+                  {language === 'sw' 
+                    ? 'Unapotazama video ya mchekeshaji, gusa wasifu wake au kitufe cha DM ili kuanza mazungumzo ya moja kwa moja.' 
+                    : 'When watching a reel, tap creator profile to start a direct 1-on-1 chat.'}
+                </p>
               </div>
-            ))}
+            ) : (
+              conversations.map(({ creator, lastMessage, time, unread }) => (
+                <div
+                  key={creator.id}
+                  onClick={() => {
+                    setActiveChatCreator(creator);
+                    memeAudio.playPop();
+                  }}
+                  className="p-3 rounded-2xl bg-neutral-950/70 border border-neutral-800/80 hover:border-amber-400/50 cursor-pointer flex items-center gap-3 transition-all hover:bg-neutral-950"
+                >
+                  <div className="relative shrink-0">
+                    <img
+                      src={creator.avatar}
+                      alt={creator.name}
+                      className="w-12 h-12 rounded-full object-cover border border-amber-500/30"
+                    />
+                    <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-neutral-950" />
+                  </div>
+                  <div className="flex-1 min-w-0 text-left">
+                    <div className="flex items-center justify-between mb-0.5">
+                      <span className="text-xs font-bold text-white truncate flex items-center gap-1">
+                        {creator.name}
+                        {creator.verified && <span className="text-[9px] text-amber-400">✓</span>}
+                      </span>
+                      <span className="text-[10px] text-neutral-500 font-mono">{time}</span>
+                    </div>
+                    <p className="text-xs text-neutral-400 truncate">{lastMessage}</p>
+                  </div>
+                  {unread > 0 && (
+                    <span className="w-5 h-5 rounded-full bg-amber-500 text-neutral-950 text-[10px] font-bold flex items-center justify-center shrink-0">
+                      {unread}
+                    </span>
+                  )}
+                </div>
+              ))
+            )}
           </div>
         ) : (
           /* VIEW 2: ACTIVE 1-ON-1 CHAT */

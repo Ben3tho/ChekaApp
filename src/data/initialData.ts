@@ -4,26 +4,26 @@ export const INITIAL_MEME_VIDEOS: MemeVideo[] = [
   {
     id: 'bd50085c-5a8f-4eca-8923-7173a14c38a1',
     title: 'Testing vibe',
-    caption: 'Testing vibe - Hii imenikuta mimi mwenyewe live bila chenga! Cheka uongeze siku za kuishi 😂💀',
+    caption: 'Testing vibe - Karibu kwenye ChekaApp! Cheka uongeze siku za kuishi 😂🇹🇿',
     creator: {
       id: '93021918-8fce-4c5a-a8d7-f446a8eef88b',
       name: 'Ben',
       username: 'Ben',
       avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Ben',
-      bio: 'Cheka App Creator & Owner',
+      bio: 'ChekaApp Creator',
       verified: true,
-      followersCount: 52000
+      followersCount: 0
     },
     videoUid: '2d57e02c332ca91e3aa22f330eeb8f62',
     mediaUrl: 'https://customer-l52pq5hwfzlky2e2.cloudflarestream.com/2d57e02c332ca91e3aa22f330eeb8f62/thumbnails/thumbnail.jpg',
     mediaType: 'video',
     duration: 30,
-    likesCount: 120,
-    commentsCount: 15,
-    sharesCount: 34,
-    savesCount: 18,
-    laughsCount: 45,
-    viewsCount: 3413,
+    likesCount: 0,
+    commentsCount: 0,
+    sharesCount: 0,
+    savesCount: 0,
+    laughsCount: 0,
+    viewsCount: 0,
     tags: ['#Cheka', '#Vibe', '#BongoComedy', '#Burudani'],
     soundTrack: {
       id: 'sound_ben_01',
@@ -45,12 +45,12 @@ export const INITIAL_MEME_VIDEOS: MemeVideo[] = [
       thumbnail: 'https://customer-l52pq5hwfzlky2e2.cloudflarestream.com/2d57e02c332ca91e3aa22f330eeb8f62/thumbnails/thumbnail.jpg'
     },
     signals: {
-      watchRatio: 1.2,
-      watchMs: 36000,
-      likes: 120,
-      shares: 34,
-      comments: 15,
-      skips: 5,
+      watchRatio: 1.0,
+      watchMs: 0,
+      likes: 0,
+      shares: 0,
+      comments: 0,
+      skips: 0,
       ageHours: 1
     },
     moderationStatus: 'APPROVED'
@@ -58,26 +58,26 @@ export const INITIAL_MEME_VIDEOS: MemeVideo[] = [
   {
     id: 'c0ceac82-17c5-42cf-96f7-090147112651',
     title: 'POV: KAZI YA JUMATATU',
-    caption: 'POV: KAZI YA JUMATATU - Hii imenikuta mimi mwenyewe live bila chenga! Cheka uongeze siku za kuishi 😂💀',
+    caption: 'POV: KAZI YA JUMATATU - Hii imenikuta mimi mwenyewe live bila chenga! 😂💀',
     creator: {
       id: '93021918-8fce-4c5a-a8d7-f446a8eef88b',
       name: 'Ben',
       username: 'Ben',
       avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Ben',
-      bio: 'Cheka App Creator & Owner',
+      bio: 'ChekaApp Creator',
       verified: true,
-      followersCount: 52000
+      followersCount: 0
     },
     videoUid: '5047b7807a709a702c1a73c1ea5dbe67',
     mediaUrl: 'https://customer-l52pq5hwfzlky2e2.cloudflarestream.com/5047b7807a709a702c1a73c1ea5dbe67/thumbnails/thumbnail.jpg',
     mediaType: 'video',
     duration: 30,
-    likesCount: 88,
-    commentsCount: 9,
-    sharesCount: 22,
-    savesCount: 14,
-    laughsCount: 65,
-    viewsCount: 3413,
+    likesCount: 0,
+    commentsCount: 0,
+    sharesCount: 0,
+    savesCount: 0,
+    laughsCount: 0,
+    viewsCount: 0,
     tags: ['#KaziYaJumatatu', '#MemeReels', '#VunjaMbavu'],
     soundTrack: {
       id: 'sound_ben_02',
@@ -99,12 +99,12 @@ export const INITIAL_MEME_VIDEOS: MemeVideo[] = [
       thumbnail: 'https://customer-l52pq5hwfzlky2e2.cloudflarestream.com/5047b7807a709a702c1a73c1ea5dbe67/thumbnails/thumbnail.jpg'
     },
     signals: {
-      watchRatio: 1.1,
-      watchMs: 33000,
-      likes: 88,
-      shares: 22,
-      comments: 9,
-      skips: 8,
+      watchRatio: 1.0,
+      watchMs: 0,
+      likes: 0,
+      shares: 0,
+      comments: 0,
+      skips: 0,
       ageHours: 2
     },
     moderationStatus: 'APPROVED'
@@ -118,20 +118,20 @@ export const INITIAL_MEME_VIDEOS: MemeVideo[] = [
       name: 'Ben',
       username: 'Ben',
       avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Ben',
-      bio: 'Cheka App Creator & Owner',
+      bio: 'ChekaApp Creator',
       verified: true,
-      followersCount: 52000
+      followersCount: 0
     },
     videoUid: 'c5b3320c463567bc7d4dee18c0a1156e',
     mediaUrl: 'https://customer-l52pq5hwfzlky2e2.cloudflarestream.com/c5b3320c463567bc7d4dee18c0a1156e/thumbnails/thumbnail.jpg',
     mediaType: 'video',
     duration: 25,
-    likesCount: 245,
-    commentsCount: 30,
-    sharesCount: 60,
-    savesCount: 42,
-    laughsCount: 110,
-    viewsCount: 8101,
+    likesCount: 0,
+    commentsCount: 0,
+    sharesCount: 0,
+    savesCount: 0,
+    laughsCount: 0,
+    viewsCount: 0,
     tags: ['#JaribioLaKwanza', '#Cheka', '#Comedy'],
     soundTrack: {
       id: 'sound_ben_03',
@@ -153,12 +153,12 @@ export const INITIAL_MEME_VIDEOS: MemeVideo[] = [
       thumbnail: 'https://customer-l52pq5hwfzlky2e2.cloudflarestream.com/c5b3320c463567bc7d4dee18c0a1156e/thumbnails/thumbnail.jpg'
     },
     signals: {
-      watchRatio: 1.4,
-      watchMs: 35000,
-      likes: 245,
-      shares: 60,
-      comments: 30,
-      skips: 3,
+      watchRatio: 1.0,
+      watchMs: 0,
+      likes: 0,
+      shares: 0,
+      comments: 0,
+      skips: 0,
       ageHours: 3
     },
     moderationStatus: 'APPROVED'
@@ -172,20 +172,20 @@ export const INITIAL_MEME_VIDEOS: MemeVideo[] = [
       name: 'Ben',
       username: 'Ben',
       avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Ben',
-      bio: 'Cheka App Creator & Owner',
+      bio: 'ChekaApp Creator',
       verified: true,
-      followersCount: 52000
+      followersCount: 0
     },
     videoUid: 'ac386c7bde396a1365c521c13844a212',
     mediaUrl: 'https://customer-l52pq5hwfzlky2e2.cloudflarestream.com/ac386c7bde396a1365c521c13844a212/thumbnails/thumbnail.jpg',
     mediaType: 'video',
     duration: 20,
-    likesCount: 160,
-    commentsCount: 18,
-    sharesCount: 40,
-    savesCount: 29,
-    laughsCount: 75,
-    viewsCount: 5553,
+    likesCount: 0,
+    commentsCount: 0,
+    sharesCount: 0,
+    savesCount: 0,
+    laughsCount: 0,
+    viewsCount: 0,
     tags: ['#ChekaTanzania', '#ComedyGold'],
     soundTrack: {
       id: 'sound_ben_04',
@@ -207,12 +207,12 @@ export const INITIAL_MEME_VIDEOS: MemeVideo[] = [
       thumbnail: 'https://customer-l52pq5hwfzlky2e2.cloudflarestream.com/ac386c7bde396a1365c521c13844a212/thumbnails/thumbnail.jpg'
     },
     signals: {
-      watchRatio: 1.3,
-      watchMs: 26000,
-      likes: 160,
-      shares: 40,
-      comments: 18,
-      skips: 4,
+      watchRatio: 1.0,
+      watchMs: 0,
+      likes: 0,
+      shares: 0,
+      comments: 0,
+      skips: 0,
       ageHours: 4
     },
     moderationStatus: 'APPROVED'
@@ -226,20 +226,20 @@ export const INITIAL_MEME_VIDEOS: MemeVideo[] = [
       name: 'Ben',
       username: 'Ben',
       avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Ben',
-      bio: 'Cheka App Creator & Owner',
+      bio: 'ChekaApp Creator',
       verified: true,
-      followersCount: 52000
+      followersCount: 0
     },
     videoUid: '1a67f20e1a0adc4561c3dfcf4488a17d',
     mediaUrl: 'https://customer-l52pq5hwfzlky2e2.cloudflarestream.com/1a67f20e1a0adc4561c3dfcf4488a17d/thumbnails/thumbnail.jpg',
     mediaType: 'video',
     duration: 28,
-    likesCount: 310,
-    commentsCount: 42,
-    sharesCount: 78,
-    savesCount: 55,
-    laughsCount: 140,
-    viewsCount: 9047,
+    likesCount: 0,
+    commentsCount: 0,
+    sharesCount: 0,
+    savesCount: 0,
+    laughsCount: 0,
+    viewsCount: 0,
     tags: ['#ChekaApp', '#StandupComedy', '#Relatable'],
     soundTrack: {
       id: 'sound_ben_05',
@@ -261,130 +261,19 @@ export const INITIAL_MEME_VIDEOS: MemeVideo[] = [
       thumbnail: 'https://customer-l52pq5hwfzlky2e2.cloudflarestream.com/1a67f20e1a0adc4561c3dfcf4488a17d/thumbnails/thumbnail.jpg'
     },
     signals: {
-      watchRatio: 1.5,
-      watchMs: 42000,
-      likes: 310,
-      shares: 78,
-      comments: 42,
-      skips: 2,
+      watchRatio: 1.0,
+      watchMs: 0,
+      likes: 0,
+      shares: 0,
+      comments: 0,
+      skips: 0,
       ageHours: 5
     },
     moderationStatus: 'APPROVED'
   }
 ];
 
-const MEME_COMMENTS_1: Comment[] = [
-  {
-    id: 'c1_01',
-    videoId: '897cb5b0-9057-4b5e-b0d1-1c2ef034a17b',
-    user: {
-      name: 'Fatma K',
-      username: 'fatma_tech',
-      avatar: '/assets/images/funny_cat_shock_meme_1792057039146.jpg'
-    },
-    text: 'Mimi nililia ofisini mbele ya HR kabisa! Hii maumivu hayana dawa 😭😭',
-    timestamp: 'Dakika 15 zilizopita',
-    likes: 420,
-    isLiked: false,
-    replies: [
-      {
-        id: 'c1_01_r1',
-        videoId: '897cb5b0-9057-4b5e-b0d1-1c2ef034a17b',
-        user: {
-          name: 'Rashid Dev',
-          username: 'rashid_code',
-          avatar: '/assets/images/swahili_comedian_avatar_1792057038016.jpg'
-        },
-        text: 'Ctrl + S inatakiwa iwe reflex kama kupumua mkuu 😂',
-        timestamp: 'Dakika 8 zilizopita',
-        likes: 85
-      }
-    ]
-  },
-  {
-    id: 'c1_02',
-    videoId: '897cb5b0-9057-4b5e-b0d1-1c2ef034a17b',
-    user: {
-      name: 'Brian Omondi',
-      username: 'brian_nbo',
-      avatar: '/assets/images/bongo_street_comedy_1792057041770.jpg'
-    },
-    text: 'Windows updates are the real villains of generation Z! 💀',
-    timestamp: 'Saa 1 iliyopita',
-    likes: 215,
-    isLiked: true
-  }
-];
-
-const MEME_COMMENTS_2: Comment[] = [
-  {
-    id: 'c2_01',
-    videoId: '04263945-e8e7-4bf2-9dfb-2579a76aa67e',
-    user: {
-      name: 'Asha Mzee',
-      username: 'asha_kariakoo',
-      avatar: '/assets/images/swahili_comedian_avatar_1792057038016.jpg'
-    },
-    text: 'Huyo paka sura yake inasema: "Kwa hiyo mimi nile nyasi leo?" 😹😹😹',
-    timestamp: 'Dakika 25 zilizopita',
-    likes: 890,
-    isLiked: true
-  },
-  {
-    id: 'c2_02',
-    videoId: '04263945-e8e7-4bf2-9dfb-2579a76aa67e',
-    user: {
-      name: 'Kevin Mutua',
-      username: 'kev_comedy',
-      avatar: '/assets/images/bongo_street_comedy_1792057041770.jpg'
-    },
-    text: 'Soko la Ferry hali ya hewa na bei vimegombana wote wawili haha',
-    timestamp: 'Dakika 40 zilizopita',
-    likes: 310
-  }
-];
-
-const MEME_COMMENTS_3: Comment[] = [
-  {
-    id: 'c3_01',
-    videoId: '4be1bbc1-c54b-4bea-beef-1d714c22af1d',
-    user: {
-      name: 'Juma Selemani',
-      username: 'juma_driver',
-      avatar: '/assets/images/swahili_comedian_avatar_1792057038016.jpg'
-    },
-    text: 'Dereva wa daladala akishika usukani anajiona kama Lewis Hamilton wa Kariakoo 😂',
-    timestamp: 'Dakika 5 zilizopita',
-    likes: 145
-  }
-];
-
-const MEME_COMMENTS_4: Comment[] = [
-  {
-    id: 'c4_01',
-    videoId: '4d1c55c6-908c-4d85-a0ca-6b4951405ba9',
-    user: {
-      name: 'Zuhura Bakari',
-      username: 'zuhura_b',
-      avatar: '/assets/images/funny_cat_shock_meme_1792057039146.jpg'
-    },
-    text: 'Alafu jibu linalofuata ni "Nilikuwa tu nataka kusikia sauti yako" saa saba usiku jamani! 🤦‍♀️🤣',
-    timestamp: 'Saa 2 zilizopita',
-    likes: 1204,
-    isLiked: true
-  }
-];
-
-export const INITIAL_COMMENTS: Record<string, Comment[]> = {
-  '897cb5b0-9057-4b5e-b0d1-1c2ef034a17b': MEME_COMMENTS_1,
-  '04263945-e8e7-4bf2-9dfb-2579a76aa67e': MEME_COMMENTS_2,
-  '4be1bbc1-c54b-4bea-beef-1d714c22af1d': MEME_COMMENTS_3,
-  '4d1c55c6-908c-4d85-a0ca-6b4951405ba9': MEME_COMMENTS_4,
-  meme_01: MEME_COMMENTS_1,
-  meme_02: MEME_COMMENTS_2,
-  meme_03: MEME_COMMENTS_3,
-  meme_04: MEME_COMMENTS_4,
-};
+export const INITIAL_COMMENTS: Record<string, Comment[]> = {};
 
 export const GIFTS_CATALOG: GiftItem[] = [
   { id: 'gift_sambusa', name: 'Sambusa Moto', swahiliName: 'Sambusa ya Nyama', icon: '🥟', coinPrice: 5, color: '#f59e0b' },

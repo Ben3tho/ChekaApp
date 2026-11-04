@@ -52,60 +52,12 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({
       const stored = localStorage.getItem('cheka_notifications');
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           return parsed;
         }
       }
     } catch (_) {}
-
-    const defaultList: AppNotification[] = [
-      {
-        id: 'notif_follow_1',
-        type: 'follow',
-        title: '👤 Shabiki Mpya (Follower)!',
-        body: '@juma_komedi amekufuata sasa hivi. Ameanza kufuatilia vichekesho vyako!',
-        is_read: false,
-        created_at: new Date(Date.now() - 1000 * 60 * 3).toISOString(),
-      },
-      {
-        id: 'notif_like_1',
-        type: 'like',
-        title: '❤️ Like Mpya!',
-        body: '@chuga_vibes amependa meme yako ya "Bosi akikuona saa tatu asubuhi".',
-        is_read: false,
-        created_at: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
-      },
-      {
-        id: 'notif_gift_1',
-        type: 'gift',
-        title: '🎁 Umepokea Zawadi Mpya!',
-        body: 'Mtumiaji @shabiki_wa_memes amekutumia zawadi ya Kikombe cha Chai (100 Coins)!',
-        is_read: false,
-        created_at: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
-      },
-      {
-        id: 'notif_comment_1',
-        type: 'comment',
-        title: '💬 Maoni Mapya!',
-        body: '@mwalimu_memes ametoa maoni: "Hahaha hii ni kali sana kiongozi! Fanya Part 2 😂"',
-        is_read: true,
-        created_at: new Date(Date.now() - 1000 * 60 * 180).toISOString(),
-      },
-      {
-        id: 'notif_streak_1',
-        type: 'system',
-        title: '🔥 Mwendelezo wa Siku (Daily Streak)',
-        body: 'Hongera! Umeingia siku 3 mfululizo. Usisahau kudai sarafu zako 50 za bure!',
-        is_read: true,
-        created_at: new Date(Date.now() - 1000 * 60 * 720).toISOString(),
-      },
-    ];
-
-    try {
-      localStorage.setItem('cheka_notifications', JSON.stringify(defaultList));
-    } catch (_) {}
-
-    return defaultList;
+    return [];
   };
 
   const fetchNotifications = async () => {

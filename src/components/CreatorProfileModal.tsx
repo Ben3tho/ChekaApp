@@ -49,10 +49,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
     v => v.creator?.id === creator.id || v.creator?.username === creator.username
   );
 
-  // If few or no direct matches in active slice, include videos with matching username or creator
-  const displayVideos = creatorVideos.length > 0 
-    ? creatorVideos 
-    : allVideos.slice(0, 4);
+  const displayVideos = creatorVideos;
 
   const sortedVideos = activeTab === 'popular'
     ? [...displayVideos].sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0))
@@ -145,7 +142,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
           <div className="flex items-center justify-center gap-6 mt-3.5 py-2 px-4 rounded-2xl bg-neutral-950/70 border border-neutral-800/80 w-full max-w-sm">
             <div className="flex flex-col items-center">
               <span className="font-extrabold text-sm text-white font-mono">
-                {(creator.followersCount || 1420).toLocaleString()}
+                {(creator.followersCount || 0).toLocaleString()}
               </span>
               <span className="text-[10px] text-neutral-400 uppercase tracking-wider">
                 {language === 'sw' ? 'Wafuasi' : 'Followers'}
@@ -273,7 +270,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                       <div className="flex items-center justify-between text-[10px] text-white font-mono">
                         <span className="flex items-center gap-0.5">
                           <Play className="w-2.5 h-2.5 fill-current text-amber-400" />
-                          {(vid.viewsCount || 10).toLocaleString()}
+                          {(vid.viewsCount || 0).toLocaleString()}
                         </span>
                         <span className="flex items-center gap-0.5 text-rose-400">
                           <Heart className="w-2.5 h-2.5 fill-current" />

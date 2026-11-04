@@ -109,7 +109,7 @@ function AppContent() {
         }
       }
     } catch (_) {}
-    return 3;
+    return 0;
   });
 
   const sendInAppNotification = (notif: {
@@ -143,20 +143,6 @@ function AppContent() {
     window.addEventListener('cheka_new_notification', handleNewNotif);
     return () => window.removeEventListener('cheka_new_notification', handleNewNotif);
   }, []);
-
-  // Simulate an incoming follower alert after user browses for 7 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      sendInAppNotification({
-        type: 'follow',
-        title: language === 'sw' ? '👤 Shabiki Mpya (Follower)!' : '👤 New Follower!',
-        body: language === 'sw'
-          ? '@daudi_tz amekufuata sasa hivi! Ameanza kutazama vichekesho vyako.'
-          : '@daudi_tz started following you just now!',
-      });
-    }, 7000);
-    return () => clearTimeout(timer);
-  }, [language]);
 
   const handleOpenCreatorProfile = (creator: Creator) => {
     setSelectedCreator(creator);
@@ -247,36 +233,37 @@ function AppContent() {
               caption: dv.caption,
               creator: {
                 id: dv.creator?.id || 'u_' + idx,
-                name: dv.creator?.username ? `@${dv.creator.username}` : fallback.creator.name,
-                username: dv.creator?.username || fallback.creator.username,
+                name: dv.creator?.username ? `@${dv.creator.username}` : (dv.creator?.name || 'Mchekeshaji'),
+                username: dv.creator?.username || 'mchekeshaji',
                 avatar: dv.creator?.avatarUrl || fallback.creator.avatar,
-                bio: 'Creator on PostgreSQL',
-                verified: true,
-                followersCount: 15000 + idx * 5000,
+                bio: dv.creator?.bio || 'Mchekeshaji wa ChekaApp',
+                verified: Boolean(dv.creator?.verified),
+                followersCount: Number(dv.creator?.followersCount ?? dv.creator?.followers_count ?? 0),
               },
               videoUid: dv.videoUid,
               status: dv.status,
               mediaUrl: dv.thumbnailUrl || fallback.mediaUrl,
               mediaType: isVideo ? 'video' : 'image',
               duration: dv.durationSec || 15,
-              likesCount: Number(dv.likes_count ?? dv.likesCount) || 0,
-              commentsCount: Number(dv.comments_count ?? dv.commentsCount) || 0,
-              sharesCount: fallback.sharesCount,
-              savesCount: Number(dv.saves_count ?? dv.savesCount) || 0,
-              laughsCount: fallback.laughsCount,
-              viewsCount: Number(dv.views_count ?? dv.viewsCount) || 0,
-              tags: fallback.tags,
-              soundTrack: fallback.soundTrack,
-              topOverlayText: fallback.topOverlayText,
-              bottomOverlayText: fallback.bottomOverlayText,
+              likesCount: Number(dv.likes_count ?? dv.likesCount ?? 0),
+              commentsCount: Number(dv.comments_count ?? dv.commentsCount ?? 0),
+              sharesCount: Number(dv.shares_count ?? dv.sharesCount ?? 0),
+              savesCount: Number(dv.saves_count ?? dv.savesCount ?? 0),
+              laughsCount: Number(dv.laughs_count ?? dv.laughsCount ?? 0),
+              viewsCount: Number(dv.views_count ?? dv.viewsCount ?? 0),
+              tags: dv.tags || fallback.tags,
+              soundTrack: dv.soundTrack || fallback.soundTrack,
+              topOverlayText: dv.topOverlayText || fallback.topOverlayText,
+              bottomOverlayText: dv.bottomOverlayText || fallback.bottomOverlayText,
               createdAt: dv.createdAt,
               isLiked: Boolean(dv.liked_by_me ?? dv.isLiked),
               isSaved: Boolean(dv.saved_by_me ?? dv.isSaved),
-              isFollowed: false,
+              isFollowed: Boolean(dv.isFollowed ?? dv.is_followed),
               signals: {
                 ...fallback.signals,
-                likes: Number(dv.likes_count ?? dv.likesCount) || 0,
-                comments: Number(dv.comments_count ?? dv.commentsCount) || 0,
+                likes: Number(dv.likes_count ?? dv.likesCount ?? 0),
+                comments: Number(dv.comments_count ?? dv.commentsCount ?? 0),
+                views: Number(dv.views_count ?? dv.viewsCount ?? 0),
               },
               streamPlayback: dv.streamPlayback,
               moderationStatus: 'APPROVED',
@@ -484,14 +471,30 @@ function AppContent() {
     }
   };
 
-  const handleFollowToggle = (creatorId: string) => {
-    const creator = videos.find(v => v.creator.id === creatorId)?.creator;
-    const isNowFollowed = !videos.find(v => v.creator.id === creatorId)?.isFollowed;
+  const handleFollowToggle = async (creatorId: string) => {
+    if (!user) {
+      setIsAuthOpen(true);
+      return;
+    }
 
+    const currentVid = videos.find(v => v.creator.id === creatorId);
+    const creator = currentVid?.creator;
+    const isNowFollowed = !currentVid?.isFollowed;
+
+    // Optimistic UI update for all videos by this creator
     setVideos(prev =>
       prev.map(v => {
         if (v.creator.id === creatorId) {
-          return { ...v, isFollowed: !v.isFollowed };
+          const currentCount = v.creator.followersCount || 0;
+          const nextCount = isNowFollowed ? currentCount + 1 : Math.max(0, currentCount - 1);
+          return {
+            ...v,
+            isFollowed: isNowFollowed,
+            creator: {
+              ...v.creator,
+              followersCount: nextCount,
+            },
+          };
         }
         return v;
       })
@@ -501,13 +504,41 @@ function AppContent() {
       memeAudio.playReward();
       sendInAppNotification({
         type: 'follow',
-        title: language === 'sw' ? '👤 Shabiki Mpya (Follower)!' : '👤 New Follower!',
+        title: language === 'sw' ? '👤 Umemfuata Msanii!' : '👤 Followed Creator!',
         body: language === 'sw'
           ? `Umefuata @${creator?.username || 'mchekeshaji'}! Sasa utapata taarifa za video zao zote mpya.`
           : `You followed @${creator?.username || 'creator'}!`,
       });
     } else {
       memeAudio.playBoing();
+    }
+
+    try {
+      const res = await authFetch(`/api/users/${creatorId}/follow`, {
+        method: isNowFollowed ? 'POST' : 'DELETE',
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && typeof data.followersCount === 'number') {
+          setVideos(prev =>
+            prev.map(v => {
+              if (v.creator.id === creatorId) {
+                return {
+                  ...v,
+                  isFollowed: Boolean(data.following),
+                  creator: {
+                    ...v.creator,
+                    followersCount: data.followersCount,
+                  },
+                };
+              }
+              return v;
+            })
+          );
+        }
+      }
+    } catch (err) {
+      console.error('Failed to sync follow state to PostgreSQL:', err);
     }
   };
 
@@ -654,7 +685,7 @@ function AppContent() {
         avatar: user.avatarUrl || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + user.username,
         bio: 'ChekaApp Creator',
         verified: false,
-        followersCount: 1,
+        followersCount: 0,
       } : {
         id: 'creator_guest',
         name: 'Mchekeshaji',
@@ -662,28 +693,28 @@ function AppContent() {
         avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Duet',
         bio: 'ChekaApp Star',
         verified: false,
-        followersCount: 12,
+        followersCount: 0,
       },
       mediaUrl: duetPayload.mediaUrl || currentVideo.mediaUrl,
       mediaType: duetPayload.mediaType || currentVideo.mediaType,
       duration: duetPayload.duration || currentVideo.duration || 15,
-      likesCount: 1,
+      likesCount: 0,
       commentsCount: 0,
       sharesCount: 0,
       savesCount: 0,
-      viewsCount: 1,
-      laughsCount: 1,
+      viewsCount: 0,
+      laughsCount: 0,
       soundTrack: currentVideo.soundTrack,
       moderationStatus: 'APPROVED',
       tags: duetPayload.tags || ['#Duet', '#Reaction'],
       topOverlayText: duetPayload.topOverlayText,
       bottomOverlayText: duetPayload.bottomOverlayText,
       createdAt: new Date().toISOString(),
-      isLiked: true,
+      isLiked: false,
       signals: {
-        watchRatio: 1.0,
-        watchMs: 15000,
-        likes: 1,
+        watchRatio: 0,
+        watchMs: 0,
+        likes: 0,
         shares: 0,
         comments: 0,
         skips: 0,
@@ -755,15 +786,32 @@ function AppContent() {
         }),
       });
 
-      // 2. Update local state in place WITHOUT filtering or reordering the active queue
-      // (Mutating or reordering the array while the user is scrolling causes reels to jump/change unexpectedly!)
+      if (!isFastSkip && watchMs >= 2000) {
+        authFetch(`/api/videos/${videoId}/view`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ watch_ms: Math.round(watchMs) }),
+        }).then(async res => {
+          if (res.ok) {
+            const data = await res.json();
+            if (data && typeof data.viewsCount === 'number') {
+              setVideos(prev =>
+                prev.map(v => v.id === videoId ? { ...v, viewsCount: data.viewsCount } : v)
+              );
+            }
+          }
+        }).catch(() => {});
+      }
+
+      // 2. Update local watch signals accurately
       setVideos(prev =>
         prev.map(v => {
           if (v.id === videoId) {
+            const isGenuineView = !isFastSkip && watchMs >= 2000;
             const vDuration = Math.max(1, v.duration || 15);
-            const curViews = (v.viewsCount || 0) + 1;
+            const curViews = isGenuineView ? (v.viewsCount || 0) + 1 : (v.viewsCount || 0);
             const newTotalWatchMs = (v.signals?.totalWatchMs || 0) + watchMs;
-            const newRatio = Number((newTotalWatchMs / (curViews * vDuration * 1000)).toFixed(2));
+            const newRatio = curViews > 0 ? Number((newTotalWatchMs / (curViews * vDuration * 1000)).toFixed(2)) : 0;
             return {
               ...v,
               viewsCount: curViews,
@@ -771,7 +819,7 @@ function AppContent() {
                 ...v.signals,
                 views: curViews,
                 skips: isFastSkip ? (v.signals?.skips || 0) + 1 : (v.signals?.skips || 0),
-                watchRatio: Math.max(v.signals?.watchRatio || 0.5, newRatio),
+                watchRatio: Math.max(v.signals?.watchRatio || 0, newRatio),
               },
             };
           }

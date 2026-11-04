@@ -1419,6 +1419,7 @@ async function startServer() {
             id: users.id,
             username: users.username,
             avatarUrl: users.avatarUrl,
+            followersCount: sql<number>`(SELECT count(*) FROM follows WHERE follows.followee_id = ${users.id})::bigint`,
           },
           likesCount: sql<number>`(SELECT count(*) FROM likes WHERE likes.video_id = ${videos.id})::bigint`,
           commentsCount: sql<number>`(SELECT count(*) FROM comments WHERE comments.video_id = ${videos.id})::bigint`,
@@ -1454,6 +1455,7 @@ async function startServer() {
               id: users.id,
               username: users.username,
               avatarUrl: users.avatarUrl,
+              followersCount: sql<number>`(SELECT count(*) FROM follows WHERE follows.followee_id = ${users.id})::bigint`,
             },
             likesCount: sql<number>`(SELECT count(*) FROM likes WHERE likes.video_id = ${videos.id})::bigint`,
             commentsCount: sql<number>`(SELECT count(*) FROM comments WHERE comments.video_id = ${videos.id})::bigint`,
@@ -1526,6 +1528,7 @@ async function startServer() {
               id: users.id,
               username: users.username,
               avatarUrl: users.avatarUrl,
+              followersCount: sql<number>`(SELECT count(*) FROM follows WHERE follows.followee_id = ${users.id})::bigint`,
             },
             likesCount: sql<number>`(SELECT count(*) FROM likes WHERE likes.video_id = ${videos.id})::bigint`,
             commentsCount: sql<number>`(SELECT count(*) FROM comments WHERE comments.video_id = ${videos.id})::bigint`,
@@ -1635,6 +1638,7 @@ async function startServer() {
             id: users.id,
             username: users.username,
             avatarUrl: users.avatarUrl,
+            followersCount: sql<number>`(SELECT count(*) FROM follows WHERE follows.followee_id = ${users.id})::bigint`,
           },
           likesCount: sql<number>`(SELECT count(*) FROM likes WHERE likes.video_id = ${videos.id})::bigint`,
           commentsCount: sql<number>`(SELECT count(*) FROM comments WHERE comments.video_id = ${videos.id})::bigint`,
@@ -1848,6 +1852,95 @@ async function startServer() {
     }
   });
 
+  // 4b. Follow / Unfollow Creator Endpoints (PostgreSQL follows table & Real notifications)
+  app.post('/api/users/:id/follow', authenticate, async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const followerId = req.user!.id;
+      const followeeId = req.params.id;
+      if (followerId === followeeId) {
+        return res.status(400).json({ error: 'Huwezi kujifuata mwenyewe' });
+      }
+
+      await pool.query(
+        `INSERT INTO follows (follower_id, followee_id) VALUES ($1, $2) ON CONFLICT DO NOTHING`,
+        [followerId, followeeId]
+      );
+
+      // Create a real notification for the creator
+      await pool.query(
+        `INSERT INTO notifications (user_id, type, title, body, metadata_json)
+         VALUES ($1, 'follow', $2, $3, $4)`,
+        [
+          followeeId,
+          `Mfuasi Mpya: @${req.user!.username}`,
+          `@${req.user!.username} amekufuata kwenye ChekaApp!`,
+          JSON.stringify({ followerId, followerUsername: req.user!.username })
+        ]
+      ).catch(() => {});
+
+      const countRes = await pool.query(
+        `SELECT count(*)::int as count FROM follows WHERE followee_id = $1`,
+        [followeeId]
+      );
+      const followersCount = countRes.rows[0]?.count || 0;
+
+      return res.json({ success: true, following: true, followersCount });
+    } catch (err: any) {
+      console.error('Error following user:', err);
+      return res.status(500).json({ error: 'Hitilafu ya kumfuata msanii' });
+    }
+  });
+
+  app.delete('/api/users/:id/follow', authenticate, async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const followerId = req.user!.id;
+      const followeeId = req.params.id;
+
+      await pool.query(
+        `DELETE FROM follows WHERE follower_id = $1 AND followee_id = $2`,
+        [followerId, followeeId]
+      );
+
+      const countRes = await pool.query(
+        `SELECT count(*)::int as count FROM follows WHERE followee_id = $1`,
+        [followeeId]
+      );
+      const followersCount = countRes.rows[0]?.count || 0;
+
+      return res.json({ success: true, following: false, followersCount });
+    } catch (err: any) {
+      console.error('Error unfollowing user:', err);
+      return res.status(500).json({ error: 'Hitilafu ya kuacha kumfuata msanii' });
+    }
+  });
+
+  app.get('/api/users/:id/follow-status', async (req: Request, res: Response) => {
+    try {
+      const currentUserId = getOptionalUserId(req);
+      const followeeId = req.params.id;
+
+      let isFollowing = false;
+      if (currentUserId) {
+        const checkRes = await pool.query(
+          `SELECT 1 FROM follows WHERE follower_id = $1 AND followee_id = $2 LIMIT 1`,
+          [currentUserId, followeeId]
+        );
+        isFollowing = checkRes.rows.length > 0;
+      }
+
+      const countRes = await pool.query(
+        `SELECT count(*)::int as count FROM follows WHERE followee_id = $1`,
+        [followeeId]
+      );
+      const followersCount = countRes.rows[0]?.count || 0;
+
+      return res.json({ isFollowing, followersCount });
+    } catch (err: any) {
+      console.error('Error fetching follow status:', err);
+      return res.status(500).json({ error: 'Hitilafu ya kupata hadhi ya ufuatiliaji' });
+    }
+  });
+
   // 5. POST /api/videos/:id/comments (Authenticated)
   // Nested replies level 1 tu (parent_id can be null or top-level comment of this video)
   app.post('/api/videos/:id/comments', authenticate, async (req: AuthenticatedRequest, res: Response) => {
@@ -1924,7 +2017,7 @@ async function startServer() {
         .from(comments)
         .where(eq(comments.videoId, videoId));
 
-      const commentsCount = countResult?.count || 1;
+      const commentsCount = countResult?.count ?? 0;
 
       return res.status(201).json({
         id: newComment.id,
@@ -2067,8 +2160,8 @@ async function startServer() {
         return res.status(200).json({
           recorded: false,
           reason: 'Video ID not found in database',
-          views_count: 1,
-          viewsCount: 1,
+          views_count: 0,
+          viewsCount: 0,
         });
       }
 
@@ -2127,7 +2220,7 @@ async function startServer() {
         .from(views)
         .where(eq(views.videoId, videoId));
 
-      const viewsCount = countResult?.count || 1;
+      const viewsCount = countResult?.count ?? 0;
 
       return res.status(201).json({
         recorded: true,

@@ -291,7 +291,7 @@ export const SearchExploreModal: React.FC<SearchExploreModalProps> = ({
                           <div className="flex items-center justify-between text-[10px] text-white font-mono">
                             <span className="flex items-center gap-0.5 text-amber-300">
                               <Play className="w-2.5 h-2.5 fill-current" />
-                              {(vid.viewsCount || 10).toLocaleString()}
+                              {(vid.viewsCount || 0).toLocaleString()}
                             </span>
                             <span className="flex items-center gap-0.5 text-rose-400">
                               <Heart className="w-2.5 h-2.5 fill-current" />
