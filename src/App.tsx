@@ -53,7 +53,7 @@ import { SearchExploreModal } from './components/SearchExploreModal';
 import { DirectMessagesDrawer } from './components/DirectMessagesDrawer';
 import { AdCampaignModal } from './components/AdCampaignModal';
 import { CreatorWalletModal } from './components/CreatorWalletModal';
-import { NotificationsDrawer } from './components/NotificationsDrawer';
+import { NotificationsDrawer, AppNotification } from './components/NotificationsDrawer';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { memeAudio } from './utils/audioSynth';
 import { setupBackgroundReengagement } from './utils/notifications';
@@ -97,8 +97,65 @@ function AppContent() {
   const [isDirectMessagesOpen, setIsDirectMessagesOpen] = useState<boolean>(false);
   const [directChatTarget, setDirectChatTarget] = useState<Creator | null>(null);
   const [isAdCampaignOpen, setIsAdCampaignOpen] = useState<boolean>(false);
-  const [isWalletOpen, setIsWalletOpen] = useState<boolean>(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false);
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState<number>(() => {
+    try {
+      const stored = localStorage.getItem('cheka_notifications');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          return parsed.filter((n: any) => !n.is_read).length;
+        }
+      }
+    } catch (_) {}
+    return 3;
+  });
+
+  const sendInAppNotification = (notif: {
+    type: 'like' | 'comment' | 'gift' | 'video' | 'system' | 'payout' | 'follow';
+    title: string;
+    body: string;
+  }) => {
+    const newNotif: AppNotification = {
+      id: `notif_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      ...notif,
+      is_read: false,
+      created_at: new Date().toISOString(),
+    };
+    try {
+      const stored = localStorage.getItem('cheka_notifications');
+      const list = stored ? JSON.parse(stored) : [];
+      const updated = [newNotif, ...(Array.isArray(list) ? list : [])];
+      localStorage.setItem('cheka_notifications', JSON.stringify(updated));
+    } catch (_) {}
+    setUnreadNotificationsCount(prev => prev + 1);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('cheka_new_notification', { detail: newNotif }));
+    }
+  };
+
+  // Listen for real-time notifications to sync unread badge
+  useEffect(() => {
+    const handleNewNotif = () => {
+      setUnreadNotificationsCount(prev => prev + 1);
+    };
+    window.addEventListener('cheka_new_notification', handleNewNotif);
+    return () => window.removeEventListener('cheka_new_notification', handleNewNotif);
+  }, []);
+
+  // Simulate an incoming follower alert after user browses for 7 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      sendInAppNotification({
+        type: 'follow',
+        title: language === 'sw' ? '👤 Shabiki Mpya (Follower)!' : '👤 New Follower!',
+        body: language === 'sw'
+          ? '@daudi_tz amekufuata sasa hivi! Ameanza kutazama vichekesho vyako.'
+          : '@daudi_tz started following you just now!',
+      });
+    }, 7000);
+    return () => clearTimeout(timer);
+  }, [language]);
 
   const handleOpenCreatorProfile = (creator: Creator) => {
     setSelectedCreator(creator);
@@ -318,6 +375,16 @@ function AppContent() {
     const target = videos.find(v => v.id === videoId);
     const willLike = target ? !target.isLiked : true;
 
+    if (willLike && target) {
+      sendInAppNotification({
+        type: 'like',
+        title: language === 'sw' ? '❤️ Like Mpya!' : '❤️ New Like!',
+        body: language === 'sw'
+          ? `Umependa video ya @${target.creator?.username || 'mchekeshaji'}: "${target.caption?.slice(0, 45) || 'Meme'}"`
+          : `You liked @${target.creator?.username || 'creator'}'s video!`,
+      });
+    }
+
     // Optimistic UI update
     setVideos(prev =>
       prev.map(v => {
@@ -417,6 +484,9 @@ function AppContent() {
   };
 
   const handleFollowToggle = (creatorId: string) => {
+    const creator = videos.find(v => v.creator.id === creatorId)?.creator;
+    const isNowFollowed = !videos.find(v => v.creator.id === creatorId)?.isFollowed;
+
     setVideos(prev =>
       prev.map(v => {
         if (v.creator.id === creatorId) {
@@ -425,7 +495,19 @@ function AppContent() {
         return v;
       })
     );
-    memeAudio.playBoing();
+
+    if (isNowFollowed) {
+      memeAudio.playReward();
+      sendInAppNotification({
+        type: 'follow',
+        title: language === 'sw' ? '👤 Shabiki Mpya (Follower)!' : '👤 New Follower!',
+        body: language === 'sw'
+          ? `Umefuata @${creator?.username || 'mchekeshaji'}! Sasa utapata taarifa za video zao zote mpya.`
+          : `You followed @${creator?.username || 'creator'}!`,
+      });
+    } else {
+      memeAudio.playBoing();
+    }
   };
 
   // 5. PostgreSQL Database Comment transaction
@@ -434,6 +516,14 @@ function AppContent() {
       setIsAuthOpen(true);
       return;
     }
+
+    sendInAppNotification({
+      type: 'comment',
+      title: language === 'sw' ? '💬 Maoni Mapya!' : '💬 New Comment!',
+      body: language === 'sw'
+        ? `Umetoa maoni kwenye video ya @${currentVideo.creator?.username || 'mchekeshaji'}: "${text.slice(0, 45)}..."`
+        : `Comment posted on @${currentVideo.creator?.username || 'creator'}'s video.`,
+    });
     if (!currentVideo?.id) return;
 
     const newComment: Comment = {
@@ -521,6 +611,13 @@ function AppContent() {
         return v;
       })
     );
+    sendInAppNotification({
+      type: 'gift',
+      title: language === 'sw' ? '🎁 Zawadi Imetumwa!' : '🎁 Gift Sent!',
+      body: language === 'sw'
+        ? `Umemzawadia @${currentVideo.creator?.username || 'mchekeshaji'} zawadi ya ${gift.nameSw} (${gift.coinPrice} Coins)!`
+        : `You sent ${gift.nameEn} to @${currentVideo.creator?.username || 'creator'}!`,
+    });
   };
 
   const handleAddFreeCoins = () => {
@@ -534,6 +631,13 @@ function AppContent() {
     setActiveTab('feed');
     // Refresh feed from database
     loadFeed(false);
+    sendInAppNotification({
+      type: 'video',
+      title: language === 'sw' ? '🎬 Video Imepakiwa Kikamilifu!' : '🎬 Video Uploaded!',
+      body: language === 'sw'
+        ? `Video yako "${newReel.title}" ipo hewani sasa hivi na mashabiki wanaanza kuitazama!`
+        : `Your video "${newReel.title}" is now live for viewers!`,
+    });
   };
 
   // 6b. Handle Duet Reaction Published
@@ -589,6 +693,13 @@ function AppContent() {
     setVideos(prev => [newDuet, ...prev]);
     setCurrentIndex(0);
     setActiveTab('feed');
+    sendInAppNotification({
+      type: 'video',
+      title: language === 'sw' ? '🎭 Duet Imechapishwa!' : '🎭 Duet Published!',
+      body: language === 'sw'
+        ? `Duet yako na @${currentVideo.creator?.username || 'mchekeshaji'} iko hewani!`
+        : `Your duet with @${currentVideo.creator?.username || 'creator'} is now published!`,
+    });
   };
 
   const handleReport = async (reason: string, blockUser: boolean) => {
@@ -1104,8 +1215,8 @@ function AppContent() {
         </div>
       </main>
 
-      {/* MOBILE BOTTOM NAVIGATION BAR: 3 DISTINCT TABS (Feed, Studio, DM) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-neutral-950/95 backdrop-blur-md border-t border-neutral-800 grid grid-cols-3 items-center h-14 pb-safe">
+      {/* MOBILE BOTTOM NAVIGATION BAR: 4 DISTINCT TABS (Feed, Studio, Taarifa, DM) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-neutral-950/95 backdrop-blur-md border-t border-neutral-800 grid grid-cols-4 items-center h-14 pb-safe">
         {/* Tab 1: Feed */}
         <button
           onClick={() => {
@@ -1138,7 +1249,31 @@ function AppContent() {
           <span className="text-[10px] font-semibold mt-0.5">Studio</span>
         </button>
 
-        {/* Tab 3: DM (Direct Messages) */}
+        {/* Tab 3: Taarifa (All Notifications: Follows, Likes, Comments, Gifts) */}
+        <button
+          onClick={() => {
+            setIsNotificationsOpen(true);
+            memeAudio.playPop();
+          }}
+          className="flex flex-col items-center justify-center h-full text-neutral-400 hover:text-amber-400 transition-colors relative"
+          title={language === 'sw' ? 'Taarifa Zote (Followers, Likes, Maoni)' : 'All Notifications'}
+        >
+          <div className="relative">
+            <Bell className="w-5 h-5" />
+            {unreadNotificationsCount > 0 ? (
+              <span className="absolute -top-1.5 -right-2 px-1.5 py-0.5 bg-rose-500 text-[9px] font-black text-white rounded-full min-w-4 text-center leading-none shadow-md animate-pulse">
+                {unreadNotificationsCount > 99 ? '99+' : unreadNotificationsCount}
+              </span>
+            ) : (
+              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-amber-400" />
+            )}
+          </div>
+          <span className="text-[10px] font-semibold mt-0.5">
+            {language === 'sw' ? 'Taarifa' : 'Alerts'}
+          </span>
+        </button>
+
+        {/* Tab 4: DM (Direct Messages) */}
         <button
           onClick={() => {
             setDirectChatTarget(null);
@@ -1320,6 +1455,9 @@ function AppContent() {
         isOpen={isNotificationsOpen}
         onClose={() => setIsNotificationsOpen(false)}
         language={language}
+        onNotificationRead={() => {
+          setUnreadNotificationsCount(0);
+        }}
       />
 
       {/* Platform Owner / Super Admin Dashboard */}

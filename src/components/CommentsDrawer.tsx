@@ -257,6 +257,27 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
       memeAudio.playBoing();
     }
 
+    // Generate in-app notification
+    try {
+      const cleanText = textToSend.replace(/\[sound:[^\]]+\]/, '').trim();
+      const notifItem = {
+        id: `notif_comment_${Date.now()}`,
+        type: 'comment' as const,
+        title: language === 'sw' ? '💬 Maoni Yamechapishwa!' : '💬 Comment Posted!',
+        body: language === 'sw'
+          ? `Umetoa maoni: "${cleanText.slice(0, 50)}"`
+          : `You commented: "${cleanText.slice(0, 50)}"`,
+        is_read: false,
+        created_at: new Date().toISOString(),
+      };
+      const stored = localStorage.getItem('cheka_notifications');
+      const list = stored ? JSON.parse(stored) : [];
+      localStorage.setItem('cheka_notifications', JSON.stringify([notifItem, ...(Array.isArray(list) ? list : [])]));
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('cheka_new_notification', { detail: notifItem }));
+      }
+    } catch (_) {}
+
     setCommentText('');
     setSelectedSound(null);
     setShowSoundPicker(false);

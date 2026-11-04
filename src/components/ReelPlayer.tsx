@@ -327,13 +327,18 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
       time: Date.now(),
     };
     holdTriggeredRef.current = false;
+    setIsHolding(true);
 
-    // Do NOT show holding ring immediately to keep scrolling completely clean.
-    // Must hold motionless for 850ms without moving finger so scrolling NEVER accidentally triggers it!
-    const HOLD_THRESHOLD = 850;
+    // Responsive 480ms hold threshold for native mobile app feel
+    const HOLD_THRESHOLD = 480;
     holdTimerRef.current = setTimeout(() => {
       holdTriggeredRef.current = true;
       clearHold();
+      if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        try {
+          navigator.vibrate(35);
+        } catch (_) {}
+      }
       setShowLongPressSheet(true);
       memeAudio.playPop();
     }, HOLD_THRESHOLD);
@@ -343,9 +348,9 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
     if (!pointerStartRef.current) return;
     const dx = Math.abs(e.clientX - pointerStartRef.current.x);
     const dy = Math.abs(e.clientY - pointerStartRef.current.y);
-    // If finger moves more than 4px in ANY direction, user is scrolling or swiping!
+    // If finger moves more than 12px in any direction, user is scrolling or swiping!
     // ABORT HOLD IMMEDIATELY!
-    if (dx > 4 || dy > 4) {
+    if (dx > 12 || dy > 12) {
       clearHold();
     }
   };
@@ -367,8 +372,8 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
     const dy = Math.abs(e.clientY - start.y);
     const dt = Date.now() - start.time;
 
-    // Clean stationary tap (< 8px movement and < 280ms duration) toggles play/mute
-    if (dx < 8 && dy < 8 && dt < 280) {
+    // Clean stationary tap (< 10px movement and < 300ms duration) toggles play/mute
+    if (dx < 10 && dy < 10 && dt < 300) {
       if (isMuted && isVideo) {
         onToggleMute();
       } else {
@@ -803,54 +808,25 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
               {language === 'sw' ? 'Zawadi' : 'Gift'}
             </span>
           </button>
-
-          {/* 5. Direct 1-Tap Duet Reaction Button */}
-          <button
-            onClick={e => {
-              e.stopPropagation();
-              if (isPlaying) {
-                onTogglePlayPause();
-              }
-              onOpenDuet?.();
-              memeAudio.playBoing();
-            }}
-            className="flex flex-col items-center gap-0.5 group"
-            title="Rekodi Duet Reaction"
-            aria-label="Duet Reaction"
-          >
-            <div className="w-11 h-11 rounded-full bg-pink-500/25 hover:bg-pink-500 text-pink-300 hover:text-white flex items-center justify-center backdrop-blur-md border border-pink-400/40 group-active:scale-125 transition-transform">
-              <Split className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] font-mono tabular-nums text-pink-300 font-bold">
-              Duet
-            </span>
-          </button>
-
-          {/* 6. Direct Quick Actions / Chaguo Zaidi Button */}
-          <button
-            onClick={e => {
-              e.stopPropagation();
-              memeAudio.playPop();
-              setShowLongPressSheet(true);
-            }}
-            className="flex flex-col items-center gap-0.5 group"
-            title="Chaguo zaidi (Cheka, Hifadhi, Duet, Ripoti)"
-            aria-label="Chaguo zaidi"
-          >
-            <div className="w-11 h-11 rounded-full bg-black/50 hover:bg-black/80 text-amber-300 hover:text-white flex items-center justify-center backdrop-blur-md border border-white/10 group-active:scale-125 transition-all shadow-md">
-              <Smile className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] font-mono tabular-nums text-neutral-300 font-medium">
-              Chaguo
-            </span>
-          </button>
         </div>
       </div>
 
-      {/* HOLD SCREEN QUICK ACTIONS SHEET (Section: Cheka, Share, Save, Duet, Sipendezwi) */}
+      {/* SUBTLE HOLD VISUAL FEEDBACK (PULSE HINT BEFORE SHEET POPS) */}
+      {isHolding && (
+        <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center animate-fade-in">
+          <div className="flex flex-col items-center gap-2 p-3.5 px-5 rounded-2xl bg-black/70 backdrop-blur-md border border-amber-500/50 text-amber-300 shadow-2xl scale-100 transition-all">
+            <Sparkles className="w-5 h-5 text-amber-400 animate-spin" />
+            <span className="text-xs font-bold text-white tracking-wide">
+              {language === 'sw' ? 'Shikilia: Inafungua Duet & Chaguo...' : 'Holding: Opening Duet & Options...'}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* HOLD SCREEN QUICK ACTIONS SHEET (Appears on holding video: Duet, Laugh, Share, Save, Report) */}
       {showLongPressSheet && (
         <div 
-          className="fixed inset-0 z-50 flex items-end justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in"
+          className="fixed inset-0 z-50 flex items-end justify-center p-4 bg-black/75 backdrop-blur-md animate-fade-in"
           onClick={() => setShowLongPressSheet(false)}
         >
           <div 
@@ -861,21 +837,59 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
             <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
               <div className="flex items-center gap-2">
                 <Smile className="w-5 h-5 text-amber-400" />
-                <h3 className="font-extrabold text-sm text-white">
-                  {language === 'sw' ? 'Chagua Kitendo cha Video' : 'Quick Meme Actions'}
-                </h3>
+                <div>
+                  <h3 className="font-extrabold text-sm text-white">
+                    {language === 'sw' ? 'Chaguo za Video & Duet' : 'Video Options & Duet'}
+                  </h3>
+                  <p className="text-[10px] text-neutral-400">
+                    {language === 'sw' ? 'Chagua kitendo unachotaka kufanya' : 'Select an action'}
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => setShowLongPressSheet(false)}
                 className="p-1 rounded-full hover:bg-neutral-800 text-neutral-400 hover:text-white"
+                aria-label="Funga"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
+            {/* 1. DUET / REACTION (Prominent Featured Action) */}
+            <button
+              onClick={() => {
+                setShowLongPressSheet(false);
+                if (isPlaying) {
+                  onTogglePlayPause();
+                }
+                onOpenDuet?.();
+                memeAudio.playBoing();
+              }}
+              className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-pink-600/30 via-rose-500/20 to-purple-600/25 hover:from-pink-600/40 hover:to-purple-600/35 border border-pink-500/40 text-left transition-all active:scale-98 group shadow-lg"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl bg-pink-500 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                  <Split className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-extrabold text-pink-300">
+                      Duet & Reaction 🎙️
+                    </p>
+                    <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-pink-500/30 text-pink-200 border border-pink-400/30 uppercase">
+                      Mpya
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-neutral-300">
+                    {language === 'sw' ? 'Rekodi video yako pembeni ya hii (Split screen)' : 'Record side-by-side reaction'}
+                  </p>
+                </div>
+              </div>
+            </button>
+
             {/* Action Grid */}
             <div className="grid grid-cols-2 gap-3">
-              {/* 1. CHEKA LAUGH REACTION */}
+              {/* 2. CHEKA LAUGH REACTION */}
               <button
                 onClick={handleLongPressCheka}
                 className="flex items-center gap-3 p-3 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-left transition-all active:scale-95 group"
@@ -893,7 +907,7 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
                 </div>
               </button>
 
-              {/* 2. SHARE */}
+              {/* 3. SHARE */}
               <button
                 onClick={() => {
                   setShowLongPressSheet(false);
@@ -912,7 +926,7 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
                 </div>
               </button>
 
-              {/* 3. SAVE / BOOKMARK */}
+              {/* 4. SAVE / BOOKMARK */}
               <button
                 onClick={() => {
                   onSaveToggle(video.id);
@@ -938,32 +952,33 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
                 </div>
               </button>
 
-              {/* 4. DUET / REACTION */}
+              {/* 5. Creator Profile */}
               <button
                 onClick={() => {
                   setShowLongPressSheet(false);
-                  if (isPlaying) {
-                    onTogglePlayPause();
-                  }
-                  onOpenDuet?.();
+                  onOpenCreatorProfile?.(video.creator);
                 }}
-                className="flex items-center gap-3 p-3 rounded-2xl bg-pink-500/15 hover:bg-pink-500/25 border border-pink-500/30 text-left transition-all active:scale-95"
+                className="flex items-center gap-3 p-3 rounded-2xl bg-neutral-800 hover:bg-neutral-700/80 border border-neutral-700 text-left transition-all active:scale-95"
               >
-                <div className="w-10 h-10 rounded-xl bg-pink-500/30 text-pink-300 flex items-center justify-center">
-                  <Split className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center overflow-hidden">
+                  <img
+                    src={video.creator?.avatar || '/assets/images/swahili_comedian_avatar_1792057038016.jpg'}
+                    alt="Creator"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-pink-200">
-                    Duet / Reaction
+                  <p className="text-xs font-bold text-neutral-100 truncate max-w-[90px]">
+                    @{video.creator?.username || 'mchekeshaji'}
                   </p>
                   <p className="text-[10px] text-neutral-400">
-                    {language === 'sw' ? 'Rekodi video' : 'Split screen'}
+                    {language === 'sw' ? 'Wasifu kamili' : 'Profile'}
                   </p>
                 </div>
               </button>
             </div>
 
-            {/* 5. SIPENDEZWI / RIPOTI */}
+            {/* 6. SIPENDEZWI / RIPOTI */}
             <button
               onClick={() => {
                 setShowLongPressSheet(false);
