@@ -97,6 +97,7 @@ function AppContent() {
   const [isDirectMessagesOpen, setIsDirectMessagesOpen] = useState<boolean>(false);
   const [directChatTarget, setDirectChatTarget] = useState<Creator | null>(null);
   const [isAdCampaignOpen, setIsAdCampaignOpen] = useState<boolean>(false);
+  const [isWalletOpen, setIsWalletOpen] = useState<boolean>(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false);
   const [unreadNotificationsCount, setUnreadNotificationsCount] = useState<number>(() => {
     try {
@@ -615,8 +616,8 @@ function AppContent() {
       type: 'gift',
       title: language === 'sw' ? '🎁 Zawadi Imetumwa!' : '🎁 Gift Sent!',
       body: language === 'sw'
-        ? `Umemzawadia @${currentVideo.creator?.username || 'mchekeshaji'} zawadi ya ${gift.nameSw} (${gift.coinPrice} Coins)!`
-        : `You sent ${gift.nameEn} to @${currentVideo.creator?.username || 'creator'}!`,
+        ? `Umemzawadia @${currentVideo.creator?.username || 'mchekeshaji'} zawadi ya ${gift.swahiliName || gift.name} (${gift.coinPrice} Coins)!`
+        : `You sent ${gift.name} to @${currentVideo.creator?.username || 'creator'}!`,
     });
   };
 
