@@ -518,7 +518,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-28 touch-pan-y overscroll-y-contain">
+    <div className="max-w-4xl mx-auto space-y-6 pb-36 w-full">
       {/* Studio Header */}
       <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
@@ -558,7 +558,7 @@ export const CreatorStudio: React.FC<CreatorStudioProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left column: Live Reel Canvas Preview */}
         <div className="lg:col-span-5 flex flex-col items-center">
-          <div className="w-full max-w-[300px] aspect-[9/16] rounded-2xl overflow-hidden relative shadow-2xl border-2 border-neutral-800 bg-neutral-950 flex flex-col justify-between p-4 group select-none touch-pan-y">
+          <div className="w-full max-w-[300px] aspect-[9/16] rounded-2xl overflow-hidden relative shadow-2xl border-2 border-neutral-800 bg-neutral-950 flex flex-col justify-between p-4 group select-none">
             {/* Visual background: Video preview or template image */}
             {videoPreviewUrl ? (
               <>

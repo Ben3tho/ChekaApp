@@ -839,14 +839,12 @@ function AppContent() {
   const activeVideos = videos;
 
   return (
-    <div className={`bg-neutral-950 text-neutral-100 flex flex-col justify-between selection:bg-amber-500/30 selection:text-amber-200 ${
-      activeTab === 'feed' ? 'h-[100dvh] overflow-hidden' : 'min-h-screen'
-    }`}>
+    <div className="bg-neutral-950 text-neutral-100 flex flex-col h-[100dvh] overflow-hidden selection:bg-amber-500/30 selection:text-amber-200">
       {/* TOP NAVIGATION BAR: Hidden on mobile feed for full immersion; compact on other tabs */}
       <header className={`${
         activeTab === 'feed'
           ? 'hidden md:flex fixed top-0 left-0 right-0 z-40 bg-neutral-950/80 backdrop-blur-md border-b border-neutral-800/60'
-          : 'sticky top-0 z-40 bg-neutral-950/95 backdrop-blur-md border-b border-neutral-800/80 flex'
+          : 'shrink-0 z-40 bg-neutral-950/95 backdrop-blur-md border-b border-neutral-800/80 flex'
       } px-3 sm:px-6 md:px-8 py-2.5 items-center justify-between gap-2 sm:gap-4 transition-colors w-full max-w-full overflow-hidden`}>
         {/* Zone 1: Brand Wordmark */}
         <div 
@@ -1149,19 +1147,17 @@ function AppContent() {
       </header>
 
       {/* MAIN VIEWPORT */}
-      <main className={`flex-1 w-full max-w-full flex ${
+      <main className={`flex-1 min-h-0 w-full max-w-full flex ${
         activeTab === 'feed'
-          ? 'h-[100dvh] p-0 m-0 overflow-hidden items-center justify-center'
-          : 'px-3 sm:px-6 py-4 pb-32 flex-col items-center justify-start overflow-y-auto touch-pan-y overscroll-y-contain'
+          ? 'h-full p-0 m-0 overflow-hidden items-center justify-center'
+          : 'px-3 sm:px-6 py-4 pb-36 flex-col items-center justify-start overflow-y-auto overflow-x-hidden'
       }`}>
         <div className={`w-full transition-all duration-300 flex flex-col items-center justify-start ${
           activeTab === 'feed'
             ? phoneFrameMode
               ? 'md:max-w-[430px] md:h-[90vh] md:max-h-[890px] md:rounded-[40px] md:border-[8px] md:border-neutral-800 md:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] md:overflow-hidden relative bg-black items-center justify-center'
               : 'w-full h-full'
-            : phoneFrameMode
-              ? 'md:max-w-[560px] mx-auto w-full'
-              : 'max-w-4xl mx-auto w-full'
+            : 'max-w-4xl mx-auto w-full'
         }`}>
           {activeTab === 'feed' && (
             <ReelPlayer
@@ -1207,7 +1203,7 @@ function AppContent() {
           )}
 
           {activeTab === 'studio' && (
-            <div className="w-full touch-pan-y">
+            <div className="w-full">
               <CreatorStudio
                 onPublish={handlePublishReel}
                 language={language}
@@ -1217,13 +1213,13 @@ function AppContent() {
           )}
 
           {activeTab === 'algorithm' && (
-            <div className="w-full py-4 pb-28 space-y-4 touch-pan-y">
+            <div className="w-full py-4 pb-28 space-y-4">
               <RecommendationEngineExplorer currentVideo={currentVideo} language={language} />
             </div>
           )}
 
           {activeTab === 'settings' && (
-            <div className="w-full touch-pan-y">
+            <div className="w-full">
               <SettingsView
                 language={language}
                 onLanguageChange={setLanguage}
