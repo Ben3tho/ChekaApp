@@ -184,6 +184,30 @@ export const messages = pgTable(
   ]
 );
 
+// 12. AppSessions table (Real-time app opens, visits, and screen time duration)
+export const appSessions = pgTable(
+  'app_sessions',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    sessionId: text('session_id').notNull().unique(),
+    visitorId: text('visitor_id').notNull(),
+    userId: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
+    username: text('username'),
+    deviceType: text('device_type').default('Mobile'),
+    userAgent: text('user_agent'),
+    ipAddress: text('ip_address'),
+    durationSec: integer('duration_sec').default(0).notNull(),
+    reelsWatched: integer('reels_watched').default(0).notNull(),
+    startedAt: timestamp('started_at', { withTimezone: true }).defaultNow().notNull(),
+    lastHeartbeatAt: timestamp('last_heartbeat_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    index('idx_app_sessions_started_at').on(table.startedAt),
+    index('idx_app_sessions_visitor_id').on(table.visitorId),
+    index('idx_app_sessions_heartbeat').on(table.lastHeartbeatAt),
+  ]
+);
+
 // Relationships
 export const usersRelations = relations(users, ({ many }) => ({
   videos: many(videos),
