@@ -124,8 +124,26 @@ export async function initSupplementaryTables(pool: Pool) {
         user_agent TEXT,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
+
+      CREATE TABLE IF NOT EXISTS app_sessions (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        session_id TEXT UNIQUE NOT NULL,
+        visitor_id TEXT NOT NULL,
+        user_id UUID,
+        username TEXT,
+        device_type TEXT DEFAULT 'Mobile',
+        user_agent TEXT,
+        ip_address TEXT,
+        duration_sec INT NOT NULL DEFAULT 0,
+        reels_watched INT NOT NULL DEFAULT 0,
+        started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        last_heartbeat_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS idx_app_sessions_started ON app_sessions (started_at);
+      CREATE INDEX IF NOT EXISTS idx_app_sessions_visitor ON app_sessions (visitor_id);
+      CREATE INDEX IF NOT EXISTS idx_app_sessions_heartbeat ON app_sessions (last_heartbeat_at);
     `);
-    console.log('Supplementary tables (Wallet Ledger, Payouts, Reports, Blocks, Notifications, Payments, Push) verified.');
+    console.log('Supplementary tables (Wallet Ledger, Payouts, Reports, Blocks, Notifications, Payments, Push, App Sessions) verified.');
   } catch (err: any) {
     console.warn('Supplementary tables init warning:', err.message);
   }

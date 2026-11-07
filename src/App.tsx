@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Smile, 
   PlusCircle, 
@@ -162,6 +162,108 @@ function AppContent() {
   useEffect(() => {
     setupBackgroundReengagement();
   }, []);
+
+  // --- REAL-TIME APP VISITOR & SCREEN TIME TRACKING ENGINE ---
+  const sessionIdRef = useRef<string>('');
+  const sessionDurationRef = useRef<number>(0);
+  const reelsWatchedRef = useRef<number>(0);
+
+  useEffect(() => {
+    // 1. Persistent anonymous/registered visitor ID
+    let visitorId = 'vis_guest';
+    try {
+      let storedVid = localStorage.getItem('cheka_visitor_id');
+      if (!storedVid) {
+        storedVid = 'vis_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36);
+        localStorage.setItem('cheka_visitor_id', storedVid);
+      }
+      visitorId = storedVid;
+    } catch (_) {}
+
+    // 2. Identify device platform
+    let deviceType = 'Kompyuta (Web)';
+    if (typeof navigator !== 'undefined') {
+      const ua = navigator.userAgent || '';
+      if (/android/i.test(ua)) deviceType = 'Android Simu';
+      else if (/iPad|iPhone|iPod/.test(ua)) deviceType = 'iPhone / iOS';
+      else if (/mobile/i.test(ua)) deviceType = 'Simu ya Mkononi';
+    }
+
+    const sessId = 'sess_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 8);
+    sessionIdRef.current = sessId;
+
+    // 3. Register instant App Visit / Open in PostgreSQL
+    fetch('/api/analytics/session/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: sessId,
+        visitorId,
+        deviceType,
+      }),
+    }).catch(() => {});
+
+    // 4. Send screen time heartbeat
+    const sendHeartbeat = () => {
+      const payload = JSON.stringify({
+        sessionId: sessId,
+        durationSec: sessionDurationRef.current,
+        reelsWatched: reelsWatchedRef.current,
+      });
+
+      if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+        const blob = new Blob([payload], { type: 'application/json' });
+        navigator.sendBeacon('/api/analytics/session/heartbeat', blob);
+      } else {
+        fetch('/api/analytics/session/heartbeat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payload,
+          keepalive: true,
+        }).catch(() => {});
+      }
+    };
+
+    // Screen time counter (only counts when app/page is visible)
+    const secondTimer = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        sessionDurationRef.current += 1;
+      }
+    }, 1000);
+
+    // Heartbeat every 15 seconds to update PostgreSQL
+    const heartbeatTimer = setInterval(() => {
+      sendHeartbeat();
+    }, 15000);
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        sendHeartbeat();
+      }
+    };
+
+    const handleBeforeUnload = () => {
+      sendHeartbeat();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('pagehide', handleBeforeUnload);
+
+    return () => {
+      clearInterval(secondTimer);
+      clearInterval(heartbeatTimer);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('pagehide', handleBeforeUnload);
+      sendHeartbeat();
+    };
+  }, []);
+
+  // Track reels viewed during session
+  useEffect(() => {
+    reelsWatchedRef.current += 1;
+  }, [currentIndex]);
 
   // 1. Fetch real PostgreSQL health status via /api/health (SELECT 1 ping)
   const checkDbHealth = async () => {

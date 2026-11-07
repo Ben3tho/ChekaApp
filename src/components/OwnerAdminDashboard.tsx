@@ -26,7 +26,10 @@ import {
   Sliders,
   Send,
   Download,
-  Loader2
+  Loader2,
+  Timer,
+  Laptop,
+  Smartphone
 } from 'lucide-react';
 import { MemeVideo, Language, Creator } from '../types';
 import { memeAudio } from '../utils/audioSynth';
@@ -59,7 +62,7 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
   onOpenAlgorithm
 }) => {
   const { user, lockOwnerSession } = useAuth();
-  const [activeTab, setActiveTab] = useState<'overview' | 'revenue' | 'users' | 'moderation' | 'database' | 'ads'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'revenue' | 'users' | 'moderation' | 'database' | 'ads' | 'visitors'>('overview');
   
   // Real live statistics state from PostgreSQL
   const [loadingStats, setLoadingStats] = useState<boolean>(true);
@@ -92,6 +95,26 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
       createdAt: string;
       creator: { id: string; username: string };
     }>;
+    visitorAnalytics?: {
+      totalVisits: number;
+      uniqueVisitors: number;
+      todayVisits: number;
+      todayUniqueVisitors: number;
+      activeNow: number;
+      avgDurationSec: number;
+      totalTimeSpentSec: number;
+      recentSessions: Array<{
+        session_id: string;
+        visitor_id: string;
+        username: string | null;
+        device_type: string | null;
+        duration_sec: number;
+        reels_watched: number;
+        started_at: string;
+        last_heartbeat_at: string;
+        is_live: boolean;
+      }>;
+    };
   }>({
     totalUsers: 0,
     totalVideos: 0,
@@ -100,8 +123,31 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
     totalTransactions: 0,
     recentPayments: [],
     operatorStats: [],
-    flaggedVideos: []
+    flaggedVideos: [],
+    visitorAnalytics: {
+      totalVisits: 0,
+      uniqueVisitors: 0,
+      todayVisits: 0,
+      todayUniqueVisitors: 0,
+      activeNow: 0,
+      avgDurationSec: 0,
+      totalTimeSpentSec: 0,
+      recentSessions: [],
+    }
   });
+
+  const formatDurationSwahili = (sec: number): string => {
+    if (!sec || sec <= 0) return 'Sekunde chache';
+    if (sec < 60) return `${sec}s`;
+    const mins = Math.floor(sec / 60);
+    const remSec = sec % 60;
+    if (mins < 60) {
+      return remSec > 0 ? `${mins}m ${remSec}s` : `${mins}m`;
+    }
+    const hours = Math.floor(mins / 60);
+    const remM = mins % 60;
+    return `${hours}h ${remM}m`;
+  };
 
   // Detailed registered users audit
   const [usersList, setUsersList] = useState<Array<{
@@ -333,6 +379,22 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
 
         <button
           onClick={() => {
+            setActiveTab('visitors');
+            fetchLiveStats();
+            memeAudio.playPop();
+          }}
+          className={`flex items-center gap-2 px-4 py-3 border-b-2 font-bold text-xs whitespace-nowrap transition-colors ${
+            activeTab === 'visitors'
+              ? 'border-amber-400 text-amber-300'
+              : 'border-transparent text-neutral-400 hover:text-neutral-200'
+          }`}
+        >
+          <Timer className="w-4 h-4 text-emerald-400" />
+          <span>Wageni & Muda ({stats.visitorAnalytics?.totalVisits || 0})</span>
+        </button>
+
+        <button
+          onClick={() => {
             setActiveTab('moderation');
             memeAudio.playPop();
           }}
@@ -441,6 +503,107 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
                   </p>
                 </div>
                 <p className="text-[10px] text-neutral-400 font-mono">PostgreSQL 16 Enterprise</p>
+              </div>
+            </div>
+
+            {/* Real-time App Visitor & Screen Time Retention Metrics */}
+            <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 space-y-4 shadow-xl">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-neutral-800 pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-sm">
+                    <Timer className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-white flex items-center gap-2">
+                      <span>Wageni Waliofungua App & Muda Waliokaa</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        LIVE TRACKING
+                      </span>
+                    </h3>
+                    <p className="text-xs text-neutral-400">
+                      Inahesabu papo hapo mtu yeyote anayefungua App hata bila kujisajili, na kupima dakika na sekunde alizokaa.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      fetchLiveStats();
+                      showToast('Takwimu za wageni na muda zimesasishwa!');
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-semibold transition-all"
+                    title="Sasisha takwimu kutoka PostgreSQL"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${loadingStats ? 'animate-spin' : ''}`} />
+                    <span>Sasisha</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setActiveTab('visitors');
+                      memeAudio.playPop();
+                    }}
+                    className="px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-bold transition-all flex items-center gap-1"
+                  >
+                    <span>Orodha ya Wageni</span>
+                    <span>&rarr;</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                <div className="bg-neutral-950 border border-neutral-800/80 rounded-xl p-3.5 space-y-1">
+                  <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+                    <span>Waliopo Hewani Sasa</span>
+                  </p>
+                  <p className="text-2xl font-black text-emerald-400 font-mono">
+                    {stats.visitorAnalytics?.activeNow || 0}
+                  </p>
+                  <p className="text-[10px] text-emerald-500/80">
+                    Watu walio ndani ya App sasa hivi
+                  </p>
+                </div>
+
+                <div className="bg-neutral-950 border border-neutral-800/80 rounded-xl p-3.5 space-y-1">
+                  <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5 text-sky-400" />
+                    <span>Jumla Waliofungua</span>
+                  </p>
+                  <p className="text-2xl font-black text-sky-400 font-mono">
+                    {stats.visitorAnalytics?.totalVisits || 0}
+                  </p>
+                  <p className="text-[10px] text-sky-400/80">
+                    {stats.visitorAnalytics?.uniqueVisitors || 0} vifaa vya kipekee (Unique)
+                  </p>
+                </div>
+
+                <div className="bg-neutral-950 border border-neutral-800/80 rounded-xl p-3.5 space-y-1">
+                  <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Waliofungua Leo</span>
+                  </p>
+                  <p className="text-2xl font-black text-amber-300 font-mono">
+                    {stats.visitorAnalytics?.todayVisits || 0}
+                  </p>
+                  <p className="text-[10px] text-amber-400/80">
+                    {stats.visitorAnalytics?.todayUniqueVisitors || 0} wageni wapya leo
+                  </p>
+                </div>
+
+                <div className="bg-neutral-950 border border-neutral-800/80 rounded-xl p-3.5 space-y-1">
+                  <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Timer className="w-3.5 h-3.5 text-purple-400" />
+                    <span>Muda wa Kukaa (Avg)</span>
+                  </p>
+                  <p className="text-2xl font-black text-purple-300 font-mono">
+                    {formatDurationSwahili(stats.visitorAnalytics?.avgDurationSec || 0)}
+                  </p>
+                  <p className="text-[10px] text-purple-400/80">
+                    Jumla: {formatDurationSwahili(stats.visitorAnalytics?.totalTimeSpentSec || 0)}
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -986,6 +1149,212 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
                   Mfumo uko tayari kuonyesha matangazo ya video kila baada ya video 6 pale mfanyabiashara anapochapisha kampeni kupitia kituo cha matangazo.
                 </p>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 6: VISITORS & SCREEN TIME RETENTION */}
+        {activeTab === 'visitors' && (
+          <div className="space-y-6">
+            {/* Header info */}
+            <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 space-y-4 shadow-xl">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <Timer className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-black text-white flex items-center gap-2">
+                      <span>Wageni Waliofungua App & Muda Waliokaa</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        LIVE METRICS
+                      </span>
+                    </h3>
+                    <p className="text-xs text-neutral-400 pt-0.5">
+                      Kila mtu anayefungua ChekaApp (hata bila kujisajili wala kulike) anahesabiwa hapa papo hapo na muda wake wa kukaa unarekodiwa kwa sekunde.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    fetchLiveStats();
+                    showToast('Takwimu za wageni zimesasishwa!');
+                  }}
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-bold transition-all border border-neutral-700/60 shadow-sm"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${loadingStats ? 'animate-spin' : ''}`} />
+                  <span>Sasisha Data</span>
+                </button>
+              </div>
+
+              {/* 4 Summary Stat Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="bg-neutral-950 border border-neutral-800 rounded-xl p-3.5 space-y-1">
+                  <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+                    <span>Waliopo Hewani Sasa</span>
+                  </p>
+                  <p className="text-2xl font-black text-emerald-400 font-mono">
+                    {stats.visitorAnalytics?.activeNow || 0}
+                  </p>
+                  <p className="text-[10px] text-emerald-500/80">Watu waliopo ndani ya App</p>
+                </div>
+
+                <div className="bg-neutral-950 border border-neutral-800 rounded-xl p-3.5 space-y-1">
+                  <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5 text-sky-400" />
+                    <span>Jumla ya Waliofungua</span>
+                  </p>
+                  <p className="text-2xl font-black text-sky-400 font-mono">
+                    {stats.visitorAnalytics?.totalVisits || 0}
+                  </p>
+                  <p className="text-[10px] text-sky-400/80">
+                    {stats.visitorAnalytics?.uniqueVisitors || 0} wageni wa kipekee (Unique)
+                  </p>
+                </div>
+
+                <div className="bg-neutral-950 border border-neutral-800 rounded-xl p-3.5 space-y-1">
+                  <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Waliofungua Leo</span>
+                  </p>
+                  <p className="text-2xl font-black text-amber-300 font-mono">
+                    {stats.visitorAnalytics?.todayVisits || 0}
+                  </p>
+                  <p className="text-[10px] text-amber-400/80">
+                    {stats.visitorAnalytics?.todayUniqueVisitors || 0} wageni wapya leo
+                  </p>
+                </div>
+
+                <div className="bg-neutral-950 border border-neutral-800 rounded-xl p-3.5 space-y-1">
+                  <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Timer className="w-3.5 h-3.5 text-purple-400" />
+                    <span>Muda wa Kukaa (Avg)</span>
+                  </p>
+                  <p className="text-2xl font-black text-purple-300 font-mono">
+                    {formatDurationSwahili(stats.visitorAnalytics?.avgDurationSec || 0)}
+                  </p>
+                  <p className="text-[10px] text-purple-400/80">
+                    Jumla: {formatDurationSwahili(stats.visitorAnalytics?.totalTimeSpentSec || 0)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Detailed Sessions Table */}
+            <div className="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl">
+              <div className="p-4 border-b border-neutral-800 flex items-center justify-between">
+                <div>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-300 flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-emerald-400" />
+                    <span>Kumbukumbu ya Hivi Karibuni ya Wageni (Vikao 25 vya Mwisho)</span>
+                  </h4>
+                  <p className="text-[11px] text-neutral-400">
+                    Taarifa hizi zinaonyesha kila mtu aliyefungua App, kifaa chake, muda aliokaa, na video alizoangalia.
+                  </p>
+                </div>
+                <span className="text-xs font-mono font-bold text-neutral-400">
+                  {stats.visitorAnalytics?.recentSessions?.length || 0} rekodi
+                </span>
+              </div>
+
+              {(!stats.visitorAnalytics?.recentSessions || stats.visitorAnalytics.recentSessions.length === 0) ? (
+                <div className="p-12 text-center space-y-3">
+                  <div className="w-12 h-12 rounded-2xl bg-neutral-950 border border-neutral-800 flex items-center justify-center mx-auto text-neutral-500">
+                    <Timer className="w-6 h-6 text-emerald-400" />
+                  </div>
+                  <p className="text-sm font-bold text-neutral-300">Hakuna kumbukumbu za wageni bado</p>
+                  <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+                    Mara tu mtu anapofungua ChekaApp kwenye simu au kompyuta, data zake za muda na kifaa zitaonekana hapa papo hapo.
+                  </p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-neutral-950/80 text-[10px] uppercase font-bold text-neutral-400 border-b border-neutral-800">
+                      <tr>
+                        <th className="p-3.5">Hali</th>
+                        <th className="p-3.5">Mgeni / Akaunti</th>
+                        <th className="p-3.5">Kifaa Alichotumia</th>
+                        <th className="p-3.5">Muda Aliokaa</th>
+                        <th className="p-3.5">Reels Alizotazama</th>
+                        <th className="p-3.5">Muda Aliofungua</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-800 font-mono">
+                      {stats.visitorAnalytics.recentSessions.map((sess, idx) => {
+                        const isLive = Boolean(sess.is_live);
+                        const devType = sess.device_type || 'Mobile';
+                        const isPhone = devType.toLowerCase().includes('simu') || devType.toLowerCase().includes('android') || devType.toLowerCase().includes('ios') || devType.toLowerCase().includes('iphone');
+
+                        return (
+                          <tr key={sess.session_id || idx} className="hover:bg-neutral-800/40 transition-colors">
+                            <td className="p-3.5">
+                              {isLive ? (
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                  <span>HEWANI SASA</span>
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium bg-neutral-800 text-neutral-400 border border-neutral-700/50">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-500" />
+                                  <span>Aliondoka</span>
+                                </span>
+                              )}
+                            </td>
+
+                            <td className="p-3.5">
+                              <div>
+                                <p className="font-bold text-white font-sans text-xs">
+                                  {sess.username ? `@${sess.username}` : 'Mgeni (Bila Kujisajili)'}
+                                </p>
+                                <p className="text-[10px] text-neutral-400 truncate max-w-[140px]" title={sess.visitor_id}>
+                                  ID: {sess.visitor_id}
+                                </p>
+                              </div>
+                            </td>
+
+                            <td className="p-3.5">
+                              <div className="flex items-center gap-1.5 text-neutral-300 font-sans">
+                                {isPhone ? (
+                                  <Smartphone className="w-3.5 h-3.5 text-amber-400" />
+                                ) : (
+                                  <Laptop className="w-3.5 h-3.5 text-sky-400" />
+                                )}
+                                <span className="text-xs">{devType}</span>
+                              </div>
+                            </td>
+
+                            <td className="p-3.5">
+                              <span className="px-2 py-0.5 rounded-md bg-purple-500/15 border border-purple-500/30 text-purple-300 font-bold text-xs">
+                                {formatDurationSwahili(sess.duration_sec)}
+                              </span>
+                            </td>
+
+                            <td className="p-3.5">
+                              <span className="text-neutral-200 font-bold">
+                                {sess.reels_watched || 0} reels
+                              </span>
+                            </td>
+
+                            <td className="p-3.5 text-neutral-400 text-[11px]">
+                              {new Date(sess.started_at).toLocaleString('sw-TZ', {
+                                day: '2-digit',
+                                month: 'short',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                              })}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
         )}

@@ -1004,6 +1004,55 @@ async function startServer() {
         .where(eq(videos.status, 'FLAGGED'))
         .limit(10);
 
+      // 7. Real App Visitor & Session Duration Analytics from app_sessions table
+      const visitorAnalytics = {
+        totalVisits: 0,
+        uniqueVisitors: 0,
+        todayVisits: 0,
+        todayUniqueVisitors: 0,
+        activeNow: 0,
+        avgDurationSec: 0,
+        totalTimeSpentSec: 0,
+        recentSessions: [] as any[],
+      };
+
+      try {
+        const sessionStatsRes = await pool.query(`
+          SELECT 
+            COUNT(*)::int as total_visits,
+            COUNT(DISTINCT visitor_id)::int as unique_visitors,
+            COUNT(CASE WHEN started_at >= CURRENT_DATE THEN 1 END)::int as today_visits,
+            COUNT(DISTINCT CASE WHEN started_at >= CURRENT_DATE THEN visitor_id END)::int as today_unique_visitors,
+            COUNT(CASE WHEN last_heartbeat_at >= NOW() - INTERVAL '2 minutes' THEN 1 END)::int as active_now,
+            COALESCE(ROUND(AVG(duration_sec)), 0)::int as avg_duration_sec,
+            COALESCE(SUM(duration_sec), 0)::int as total_time_spent_sec
+          FROM app_sessions
+        `);
+
+        if (sessionStatsRes.rows.length > 0) {
+          const row = sessionStatsRes.rows[0];
+          visitorAnalytics.totalVisits = Number(row.total_visits) || 0;
+          visitorAnalytics.uniqueVisitors = Number(row.unique_visitors) || 0;
+          visitorAnalytics.todayVisits = Number(row.today_visits) || 0;
+          visitorAnalytics.todayUniqueVisitors = Number(row.today_unique_visitors) || 0;
+          visitorAnalytics.activeNow = Number(row.active_now) || 0;
+          visitorAnalytics.avgDurationSec = Number(row.avg_duration_sec) || 0;
+          visitorAnalytics.totalTimeSpentSec = Number(row.total_time_spent_sec) || 0;
+        }
+
+        const recentSessionsRes = await pool.query(`
+          SELECT 
+            session_id, visitor_id, username, device_type, duration_sec, reels_watched, started_at, last_heartbeat_at,
+            (last_heartbeat_at >= NOW() - INTERVAL '2 minutes') as is_live
+          FROM app_sessions
+          ORDER BY started_at DESC
+          LIMIT 25
+        `);
+        visitorAnalytics.recentSessions = recentSessionsRes.rows;
+      } catch (analyticsErr: any) {
+        console.warn('Visitor analytics query note:', analyticsErr.message);
+      }
+
       return res.json({
         totalUsers,
         totalVideos,
@@ -1013,10 +1062,75 @@ async function startServer() {
         recentPayments,
         operatorStats,
         flaggedVideos,
+        visitorAnalytics,
       });
     } catch (err: any) {
       console.error('Error fetching owner stats:', err);
       return res.status(500).json({ error: 'Failed to fetch owner statistics', details: err.message });
+    }
+  });
+
+  // ==========================================
+  // APP VISITOR & SCREEN TIME ANALYTICS ENGINE
+  // ==========================================
+  app.post('/api/analytics/session/start', async (req: Request, res: Response) => {
+    try {
+      const { sessionId, visitorId, deviceType } = req.body;
+      if (!sessionId || !visitorId) {
+        return res.status(400).json({ error: 'sessionId and visitorId are required' });
+      }
+
+      const clientIp = getClientIp(req);
+      const userAgent = req.get('user-agent') || '';
+      const userId = getOptionalUserId(req);
+
+      let username: string | null = null;
+      if (userId) {
+        const [u] = await db.select({ username: users.username }).from(users).where(eq(users.id, userId)).limit(1);
+        username = u?.username || null;
+      }
+
+      await pool.query(
+        `INSERT INTO app_sessions (session_id, visitor_id, user_id, username, device_type, user_agent, ip_address, duration_sec, reels_watched, started_at, last_heartbeat_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, 0, 0, NOW(), NOW())
+         ON CONFLICT (session_id) DO UPDATE SET last_heartbeat_at = NOW()`,
+        [sessionId, visitorId, userId || null, username, deviceType || 'Mobile', userAgent.substring(0, 255), clientIp]
+      );
+
+      return res.json({ success: true, sessionId });
+    } catch (err: any) {
+      console.warn('Analytics session start note:', err.message);
+      return res.json({ success: true, fallback: true });
+    }
+  });
+
+  app.post('/api/analytics/session/heartbeat', async (req: Request, res: Response) => {
+    try {
+      let body = req.body;
+      if (typeof body === 'string') {
+        try { body = JSON.parse(body); } catch {}
+      }
+      const { sessionId, durationSec, reelsWatched } = body || {};
+      if (!sessionId) {
+        return res.status(200).json({ success: true });
+      }
+
+      const dur = Math.max(0, Math.min(Number(durationSec) || 0, 86400));
+      const reels = Math.max(0, Number(reelsWatched) || 0);
+
+      await pool.query(
+        `UPDATE app_sessions 
+         SET duration_sec = GREATEST(duration_sec, $1),
+             reels_watched = GREATEST(reels_watched, $2),
+             last_heartbeat_at = NOW()
+         WHERE session_id = $3`,
+        [dur, reels, sessionId]
+      );
+
+      return res.json({ success: true });
+    } catch (err: any) {
+      console.warn('Analytics heartbeat note:', err.message);
+      return res.json({ success: true, fallback: true });
     }
   });
 
