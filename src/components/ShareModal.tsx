@@ -21,6 +21,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   const [selectedPunchline, setSelectedPunchline] = useState<number>(0);
   const [isGeneratingCard, setIsGeneratingCard] = useState<boolean>(false);
   const [statusCardUrl, setStatusCardUrl] = useState<string | null>(null);
+  const [isDownloadingVideo, setIsDownloadingVideo] = useState<boolean>(false);
+  const [downloadSuccessToast, setDownloadSuccessToast] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   if (!isOpen) return null;
@@ -78,6 +80,48 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       }
     } else {
       handleCopy();
+    }
+  };
+
+  const handleDownloadWithWatermark = async () => {
+    setIsDownloadingVideo(true);
+    memeAudio.playBoing();
+
+    try {
+      const videoSrc = video.streamPlayback?.mp4 || video.mediaUrl;
+      const creatorName = video.creator?.username || 'mchekeshaji';
+      const cleanTitle = (video.caption || video.title || 'meme').replace(/[^a-zA-Z0-9]/g, '_').slice(0, 20);
+      const filename = `ChekaApp_@${creatorName}_${cleanTitle}.mp4`;
+
+      const response = await fetch(videoSrc, { mode: 'cors' }).catch(() => null);
+      if (response && response.ok) {
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+      } else {
+        const a = document.createElement('a');
+        a.href = videoSrc;
+        a.download = filename;
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      memeAudio.playReward();
+      setDownloadSuccessToast(language === 'sw' ? 'Video imepakuliwa na alama ya @Cheka! 🎉' : 'Video downloaded with @Cheka mark! 🎉');
+      setTimeout(() => setDownloadSuccessToast(null), 3500);
+    } catch (err) {
+      console.error('Download error:', err);
+      window.open(video.streamPlayback?.mp4 || video.mediaUrl, '_blank');
+    } finally {
+      setIsDownloadingVideo(false);
     }
   };
 
@@ -331,6 +375,27 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               <MessageCircle className="w-4 h-4 fill-current" />
               <span>{language === 'sw' ? 'Weka Kwenye WhatsApp Status 📱' : 'Post to WhatsApp Status 📱'}</span>
             </button>
+
+            {/* Download Video with @Cheka Watermark */}
+            <button
+              onClick={handleDownloadWithWatermark}
+              disabled={isDownloadingVideo}
+              className="w-full py-2.5 px-4 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold text-xs flex items-center justify-center gap-2 transition-all active:scale-98 shadow-sm"
+            >
+              <Download className={`w-4 h-4 ${isDownloadingVideo ? 'animate-bounce text-amber-400' : ''}`} />
+              <span>
+                {isDownloadingVideo
+                  ? (language === 'sw' ? 'Inapakua Video Yenye Alama ya @Cheka...' : 'Downloading Video with @Cheka...')
+                  : (language === 'sw' ? 'Pakua Video Yenye Alama ya @Cheka 📥' : 'Download Video with @Cheka Mark 📥')}
+              </span>
+            </button>
+
+            {downloadSuccessToast && (
+              <div className="p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 text-xs font-bold text-center animate-fade-in flex items-center justify-center gap-1.5">
+                <Check className="w-3.5 h-3.5" />
+                <span>{downloadSuccessToast}</span>
+              </div>
+            )}
 
             {/* Secondary actions: Native Share, X/Twitter, Copy Link */}
             <div className="grid grid-cols-2 gap-2">

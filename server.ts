@@ -1053,6 +1053,122 @@ async function startServer() {
         console.warn('Visitor analytics query note:', analyticsErr.message);
       }
 
+      // 8. Real Time-Series Chart Analytics (Daily, Weekly, Monthly)
+      const chartAnalytics = {
+        daily: [] as any[],
+        weekly: [] as any[],
+        monthly: [] as any[],
+      };
+
+      try {
+        // Daily: last 7 days
+        const dailyRes = await pool.query(`
+          SELECT 
+            d::date as date_val,
+            TO_CHAR(d, 'DD Mon') as label,
+            TO_CHAR(d, 'Dy') as day_name,
+            COALESCE(s.visits, 0)::int as visits,
+            COALESCE(s.unique_visitors, 0)::int as unique_visitors,
+            COALESCE(ROUND(s.screen_time_sec / 60.0), 0)::int as screen_time_min,
+            COALESCE(s.reels_watched, 0)::int as reels_watched,
+            COALESCE(p.revenue, 0)::int as revenue
+          FROM generate_series(CURRENT_DATE - INTERVAL '6 days', CURRENT_DATE, '1 day'::interval) d
+          LEFT JOIN (
+            SELECT 
+              date_trunc('day', started_at)::date as day_date,
+              COUNT(*)::int as visits,
+              COUNT(DISTINCT visitor_id)::int as unique_visitors,
+              COALESCE(SUM(duration_sec), 0)::int as screen_time_sec,
+              COALESCE(SUM(reels_watched), 0)::int as reels_watched
+            FROM app_sessions
+            WHERE started_at >= CURRENT_DATE - INTERVAL '6 days'
+            GROUP BY date_trunc('day', started_at)::date
+          ) s ON s.day_date = d::date
+          LEFT JOIN (
+            SELECT 
+              date_trunc('day', created_at)::date as day_date,
+              COALESCE(SUM(amount), 0)::int as revenue
+            FROM payments
+            WHERE status = 'COMPLETED' AND created_at >= CURRENT_DATE - INTERVAL '6 days'
+            GROUP BY date_trunc('day', created_at)::date
+          ) p ON p.day_date = d::date
+          ORDER BY d ASC
+        `);
+        chartAnalytics.daily = dailyRes.rows;
+
+        // Weekly: last 4 weeks
+        const weeklyRes = await pool.query(`
+          SELECT 
+            w::date as date_val,
+            'Wiki ' || TO_CHAR(w, 'WW') as label,
+            'Wiki ' || TO_CHAR(w, 'WW') as day_name,
+            COALESCE(s.visits, 0)::int as visits,
+            COALESCE(s.unique_visitors, 0)::int as unique_visitors,
+            COALESCE(ROUND(s.screen_time_sec / 60.0), 0)::int as screen_time_min,
+            COALESCE(s.reels_watched, 0)::int as reels_watched,
+            COALESCE(p.revenue, 0)::int as revenue
+          FROM generate_series(date_trunc('week', CURRENT_DATE - INTERVAL '3 weeks'), date_trunc('week', CURRENT_DATE), '1 week'::interval) w
+          LEFT JOIN (
+            SELECT 
+              date_trunc('week', started_at)::date as week_date,
+              COUNT(*)::int as visits,
+              COUNT(DISTINCT visitor_id)::int as unique_visitors,
+              COALESCE(SUM(duration_sec), 0)::int as screen_time_sec,
+              COALESCE(SUM(reels_watched), 0)::int as reels_watched
+            FROM app_sessions
+            WHERE started_at >= date_trunc('week', CURRENT_DATE - INTERVAL '3 weeks')
+            GROUP BY date_trunc('week', started_at)::date
+          ) s ON s.week_date = w::date
+          LEFT JOIN (
+            SELECT 
+              date_trunc('week', created_at)::date as week_date,
+              COALESCE(SUM(amount), 0)::int as revenue
+            FROM payments
+            WHERE status = 'COMPLETED' AND created_at >= date_trunc('week', CURRENT_DATE - INTERVAL '3 weeks')
+            GROUP BY date_trunc('week', created_at)::date
+          ) p ON p.week_date = w::date
+          ORDER BY w ASC
+        `);
+        chartAnalytics.weekly = weeklyRes.rows;
+
+        // Monthly: last 6 months
+        const monthlyRes = await pool.query(`
+          SELECT 
+            m::date as date_val,
+            TO_CHAR(m, 'Mon YYYY') as label,
+            TO_CHAR(m, 'Mon') as day_name,
+            COALESCE(s.visits, 0)::int as visits,
+            COALESCE(s.unique_visitors, 0)::int as unique_visitors,
+            COALESCE(ROUND(s.screen_time_sec / 60.0), 0)::int as screen_time_min,
+            COALESCE(s.reels_watched, 0)::int as reels_watched,
+            COALESCE(p.revenue, 0)::int as revenue
+          FROM generate_series(date_trunc('month', CURRENT_DATE - INTERVAL '5 months'), date_trunc('month', CURRENT_DATE), '1 month'::interval) m
+          LEFT JOIN (
+            SELECT 
+              date_trunc('month', started_at)::date as month_date,
+              COUNT(*)::int as visits,
+              COUNT(DISTINCT visitor_id)::int as unique_visitors,
+              COALESCE(SUM(duration_sec), 0)::int as screen_time_sec,
+              COALESCE(SUM(reels_watched), 0)::int as reels_watched
+            FROM app_sessions
+            WHERE started_at >= date_trunc('month', CURRENT_DATE - INTERVAL '5 months')
+            GROUP BY date_trunc('month', started_at)::date
+          ) s ON s.month_date = m::date
+          LEFT JOIN (
+            SELECT 
+              date_trunc('month', created_at)::date as month_date,
+              COALESCE(SUM(amount), 0)::int as revenue
+            FROM payments
+            WHERE status = 'COMPLETED' AND created_at >= date_trunc('month', CURRENT_DATE - INTERVAL '5 months')
+            GROUP BY date_trunc('month', created_at)::date
+          ) p ON p.month_date = m::date
+          ORDER BY m ASC
+        `);
+        chartAnalytics.monthly = monthlyRes.rows;
+      } catch (chartErr: any) {
+        console.warn('Chart analytics query note:', chartErr.message);
+      }
+
       return res.json({
         totalUsers,
         totalVideos,
@@ -1063,6 +1179,7 @@ async function startServer() {
         operatorStats,
         flaggedVideos,
         visitorAnalytics,
+        chartAnalytics,
       });
     } catch (err: any) {
       console.error('Error fetching owner stats:', err);

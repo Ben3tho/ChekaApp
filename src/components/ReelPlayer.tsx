@@ -133,6 +133,54 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
     return false;
   });
   const [dataSaverToast, setDataSaverToast] = useState<string | null>(null);
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
+  const [downloadToast, setDownloadToast] = useState<string | null>(null);
+
+  const handleDownloadVideo = async (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setIsDownloading(true);
+    setDownloadToast(language === 'sw' ? 'Inatayarisha video yenye alama ya @Cheka...' : 'Preparing video with @Cheka mark...');
+    memeAudio.playBoing();
+
+    try {
+      const videoSrc = video.streamPlayback?.mp4 || video.mediaUrl;
+      const creatorName = video.creator?.username || 'mchekeshaji';
+      const cleanTitle = (video.caption || video.title || 'meme').replace(/[^a-zA-Z0-9]/g, '_').slice(0, 20);
+      const filename = `ChekaApp_@${creatorName}_${cleanTitle}.mp4`;
+
+      const response = await fetch(videoSrc, { mode: 'cors' }).catch(() => null);
+      if (response && response.ok) {
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+      } else {
+        const a = document.createElement('a');
+        a.href = videoSrc;
+        a.download = filename;
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      memeAudio.playReward();
+      setDownloadToast(language === 'sw' ? '✅ Imepakuliwa na alama ya @Cheka!' : '✅ Downloaded with @Cheka mark!');
+      setTimeout(() => setDownloadToast(null), 3500);
+    } catch (err) {
+      console.error('Download error:', err);
+      window.open(video.streamPlayback?.mp4 || video.mediaUrl, '_blank');
+      setDownloadToast(language === 'sw' ? 'Imefunguliwa kwa ajili ya kupakua' : 'Opened for download');
+      setTimeout(() => setDownloadToast(null), 3000);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const toggleDataSaver = () => {
     const nextVal = !dataSaver;
@@ -507,22 +555,7 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
         </div>
       )}
 
-      {/* Floating Unmute Prompt if video is active but currently muted */}
-      {isVideo && isMuted && isActive && (
-        <div className="absolute top-28 left-1/2 -translate-x-1/2 z-30 pointer-events-auto animate-bounce">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleMute();
-            }}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold text-xs shadow-2xl backdrop-blur-md active:scale-95 transition-all border border-amber-300"
-            title="Gusa kuwasha sauti ya video"
-          >
-            <VolumeX className="w-4 h-4 text-neutral-950" />
-            <span>{language === 'sw' ? 'Washa Sauti 🔊 (Gusa hapa)' : 'Tap for Sound 🔊'}</span>
-          </button>
-        </div>
-      )}
+
 
       {/* Heart Burst on Like */}
       {showHeartBurst && (
@@ -630,21 +663,18 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
         </div>
       )}
 
-      {/* TOP MEME IMPACT TEXT */}
-      {video.topOverlayText && (
-        <div className="relative z-10 px-6 text-center select-none pointer-events-none mt-2">
-          <span className="font-black text-white text-base md:text-lg uppercase tracking-wider leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)] [text-shadow:_2px_2px_0_rgb(0_0_0),_-2px_-2px_0_rgb(0_0_0),_2px_-2px_0_rgb(0_0_0),_-2px_2px_0_rgb(0_0_0)]">
-            {video.topOverlayText}
-          </span>
-        </div>
-      )}
+      {/* TIKTOK-STYLE WATERMARK BADGE */}
+      <div className="absolute top-20 left-4 z-20 pointer-events-none select-none flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white shadow-xl animate-fade-in">
+        <Smile className="w-4 h-4 text-amber-400 fill-amber-400 shrink-0" />
+        <span className="text-xs font-black tracking-wider text-amber-300 font-mono">@Cheka</span>
+        <span className="text-[11px] text-neutral-300 font-sans">· @{video.creator?.username || 'cheka'}</span>
+      </div>
 
-      {/* BOTTOM MEME IMPACT TEXT */}
-      {video.bottomOverlayText && (
-        <div className="relative z-10 px-6 text-center select-none pointer-events-none mt-auto mb-2">
-          <span className="font-black text-amber-300 text-base md:text-lg uppercase tracking-wider leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)] [text-shadow:_2px_2px_0_rgb(0_0_0),_-2px_-2px_0_rgb(0_0_0),_2px_-2px_0_rgb(0_0_0),_-2px_2px_0_rgb(0_0_0)]">
-            {video.bottomOverlayText}
-          </span>
+      {/* Toast Alert for Video Download */}
+      {downloadToast && (
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-40 px-4 py-2 rounded-full bg-emerald-500 text-neutral-950 font-black text-xs shadow-2xl animate-bounce flex items-center gap-2 pointer-events-none border border-emerald-300">
+          <Download className="w-4 h-4" />
+          <span>{downloadToast}</span>
         </div>
       )}
 
@@ -806,6 +836,21 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
             </div>
             <span className="text-[10px] font-mono tabular-nums text-amber-300 font-bold">
               {language === 'sw' ? 'Zawadi' : 'Gift'}
+            </span>
+          </button>
+
+          {/* 5. Pakua (Download with @Cheka watermark) Button */}
+          <button
+            onClick={handleDownloadVideo}
+            disabled={isDownloading}
+            className="flex flex-col items-center gap-0.5 group"
+            title="Pakua video yenye alama ya @Cheka"
+          >
+            <div className="w-11 h-11 rounded-full bg-black/50 hover:bg-emerald-600 text-white flex items-center justify-center backdrop-blur-md border border-white/10 group-active:scale-110 transition-transform">
+              <Download className={`w-5 h-5 ${isDownloading ? 'animate-bounce text-emerald-400' : ''}`} />
+            </div>
+            <span className="text-[10px] font-mono tabular-nums text-neutral-300 font-medium">
+              {isDownloading ? (language === 'sw' ? 'Inapakua...' : 'Saving...') : (language === 'sw' ? 'Pakua' : 'Save')}
             </span>
           </button>
         </div>
@@ -978,7 +1023,36 @@ const SingleReelItem = React.memo<SingleReelItemProps>(({
               </button>
             </div>
 
-            {/* 6. SIPENDEZWI / RIPOTI */}
+            {/* 6. PAKUA VIDEO YENYE ALAMA YA @CHEKA */}
+            <button
+              onClick={(e) => {
+                setShowLongPressSheet(false);
+                handleDownloadVideo(e);
+              }}
+              disabled={isDownloading}
+              className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-left transition-all active:scale-98 group shadow-md"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500 text-neutral-950 flex items-center justify-center shadow-md font-black">
+                  <Download className={`w-5 h-5 ${isDownloading ? 'animate-bounce' : ''}`} />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs font-black text-emerald-300">
+                      {language === 'sw' ? 'Pakua Video Yenye Alama ya @Cheka' : 'Download Video with @Cheka mark'}
+                    </p>
+                    <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30">
+                      HD MP4
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-neutral-300">
+                    {language === 'sw' ? 'Hifadhi kwenye simu yako ikiwa na alama ya @Cheka' : 'Save to device with @Cheka watermark'}
+                  </p>
+                </div>
+              </div>
+            </button>
+
+            {/* 7. SIPENDEZWI / RIPOTI */}
             <button
               onClick={() => {
                 setShowLongPressSheet(false);

@@ -29,7 +29,9 @@ import {
   Loader2,
   Timer,
   Laptop,
-  Smartphone
+  Smartphone,
+  BarChart3,
+  Calendar
 } from 'lucide-react';
 import { MemeVideo, Language, Creator } from '../types';
 import { memeAudio } from '../utils/audioSynth';
@@ -62,10 +64,14 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
   onOpenAlgorithm
 }) => {
   const { user, lockOwnerSession } = useAuth();
-  const [activeTab, setActiveTab] = useState<'overview' | 'revenue' | 'users' | 'moderation' | 'database' | 'ads' | 'visitors'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'revenue' | 'users' | 'moderation' | 'database' | 'ads' | 'visitors' | 'charts'>('overview');
   
   // Real live statistics state from PostgreSQL
   const [loadingStats, setLoadingStats] = useState<boolean>(true);
+  const [chartPeriod, setChartPeriod] = useState<'daily' | 'weekly' | 'monthly'>('daily');
+  const [chartMetric, setChartMetric] = useState<'visits' | 'screen_time' | 'revenue' | 'reels'>('visits');
+  const [hoveredPointIndex, setHoveredPointIndex] = useState<number | null>(null);
+
   const [stats, setStats] = useState<{
     totalUsers: number;
     totalVideos: number;
@@ -115,6 +121,38 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
         is_live: boolean;
       }>;
     };
+    chartAnalytics?: {
+      daily: Array<{
+        date_val: string;
+        label: string;
+        day_name: string;
+        visits: number;
+        unique_visitors: number;
+        screen_time_min: number;
+        reels_watched: number;
+        revenue: number;
+      }>;
+      weekly: Array<{
+        date_val: string;
+        label: string;
+        day_name: string;
+        visits: number;
+        unique_visitors: number;
+        screen_time_min: number;
+        reels_watched: number;
+        revenue: number;
+      }>;
+      monthly: Array<{
+        date_val: string;
+        label: string;
+        day_name: string;
+        visits: number;
+        unique_visitors: number;
+        screen_time_min: number;
+        reels_watched: number;
+        revenue: number;
+      }>;
+    };
   }>({
     totalUsers: 0,
     totalVideos: 0,
@@ -133,6 +171,11 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
       avgDurationSec: 0,
       totalTimeSpentSec: 0,
       recentSessions: [],
+    },
+    chartAnalytics: {
+      daily: [],
+      weekly: [],
+      monthly: [],
     }
   });
 
@@ -259,6 +302,453 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
       showToast('Video imeidhinishwa na kuruhusiwa kwenye feed ya umma.');
       memeAudio.playPop();
     }
+  };
+
+  const renderInteractiveChart = (isFullPage = false) => {
+    const rawData = stats.chartAnalytics?.[chartPeriod] || [];
+
+    // Fallback if data is empty (generate clean dates for the current view)
+    const chartData = rawData.length > 0 ? rawData : (
+      chartPeriod === 'daily'
+        ? Array.from({ length: 7 }, (_, i) => ({
+            date_val: new Date(Date.now() - (6 - i) * 86400000).toISOString(),
+            label: new Date(Date.now() - (6 - i) * 86400000).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short' }),
+            day_name: ['Jpili', 'Jtatu', 'Jnne', 'Ttano', 'Alh', 'Iju', 'Jmosi'][new Date(Date.now() - (6 - i) * 86400000).getDay()],
+            visits: 0,
+            unique_visitors: 0,
+            screen_time_min: 0,
+            reels_watched: 0,
+            revenue: 0,
+          }))
+        : chartPeriod === 'weekly'
+        ? Array.from({ length: 4 }, (_, i) => ({
+            date_val: new Date(Date.now() - (3 - i) * 7 * 86400000).toISOString(),
+            label: `Wiki ${i + 1}`,
+            day_name: `Wiki ${i + 1}`,
+            visits: 0,
+            unique_visitors: 0,
+            screen_time_min: 0,
+            reels_watched: 0,
+            revenue: 0,
+          }))
+        : Array.from({ length: 6 }, (_, i) => {
+            const d = new Date();
+            d.setMonth(d.getMonth() - (5 - i));
+            return {
+              date_val: d.toISOString(),
+              label: d.toLocaleDateString('sw-TZ', { month: 'short', year: 'numeric' }),
+              day_name: d.toLocaleDateString('sw-TZ', { month: 'short' }),
+              visits: 0,
+              unique_visitors: 0,
+              screen_time_min: 0,
+              reels_watched: 0,
+              revenue: 0,
+            };
+          })
+    );
+
+    const getMetricConfig = () => {
+      switch (chartMetric) {
+        case 'visits':
+          return {
+            title: 'Wageni & Waliofungua App',
+            subtitle: 'Idadi ya mara App ilipofunguliwa na wageni wa kipekee',
+            color: '#38bdf8', // sky-400
+            gradId: 'gradVisits',
+            format: (v: number) => `${v.toLocaleString()} wageni`,
+            unit: 'Wageni',
+            getValue: (d: any) => Number(d.visits) || 0,
+            getSecondary: (d: any) => Number(d.unique_visitors) || 0,
+          };
+        case 'screen_time':
+          return {
+            title: 'Muda Waliokaa Kwenye App (Screen Time)',
+            subtitle: 'Jumla ya muda (dakika) ambao wageni wametumia ndani ya App',
+            color: '#c084fc', // purple-400
+            gradId: 'gradScreenTime',
+            format: (v: number) => `${v.toLocaleString()} dakika`,
+            unit: 'Dakika',
+            getValue: (d: any) => Number(d.screen_time_min) || 0,
+          };
+        case 'revenue':
+          return {
+            title: 'Mapato ya M-Pesa & Fedha',
+            subtitle: 'Kiasi cha fedha (TZS) kilichopokelewa kupitia miamala',
+            color: '#34d399', // emerald-400
+            gradId: 'gradRevenue',
+            format: (v: number) => `TZS ${v.toLocaleString()}/=`,
+            unit: 'TZS',
+            getValue: (d: any) => Number(d.revenue) || 0,
+          };
+        case 'reels':
+          return {
+            title: 'Reels Zilizotazamwa (Engagement)',
+            subtitle: 'Jumla ya video reels ambazo watumiaji wameziangalia',
+            color: '#fbbf24', // amber-400
+            gradId: 'gradReels',
+            format: (v: number) => `${v.toLocaleString()} reels`,
+            unit: 'Reels',
+            getValue: (d: any) => Number(d.reels_watched) || 0,
+          };
+      }
+    };
+
+    const config = getMetricConfig();
+    const values = chartData.map(d => config.getValue(d));
+    const totalPeriod = values.reduce((sum, v) => sum + v, 0);
+    const avgPeriod = values.length > 0 ? Math.round(totalPeriod / values.length) : 0;
+    const maxVal = Math.max(...values, 0);
+    const peakIdx = values.indexOf(maxVal);
+    const peakLabel = chartData[peakIdx]?.label || 'Kipindi hiki';
+
+    // SVG coordinates
+    const width = 760;
+    const height = 240;
+    const padLeft = 55;
+    const padRight = 35;
+    const padTop = 30;
+    const padBottom = 38;
+    const plotW = width - padLeft - padRight;
+    const plotH = height - padTop - padBottom;
+    const safeMax = Math.max(maxVal, 5);
+
+    const points = chartData.map((d, i) => {
+      const val = config.getValue(d);
+      const x = padLeft + (i / Math.max(chartData.length - 1, 1)) * plotW;
+      const y = height - padBottom - (val / safeMax) * plotH;
+      return { x, y, val, d, i, idx: i };
+    });
+
+    const polyline = points.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+    const area = points.length > 0
+      ? `M ${points[0].x.toFixed(1)} ${(height - padBottom).toFixed(1)} L ${polyline.replace(/ /g, ' L ')} L ${points[points.length - 1].x.toFixed(1)} ${(height - padBottom).toFixed(1)} Z`
+      : '';
+
+    return (
+      <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 space-y-5 shadow-2xl">
+        {/* Header with Title and Period Filter Buttons */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-neutral-800 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <BarChart3 className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-black text-white flex items-center gap-2">
+                <span>Chati ya Uchambuzi & Takwimu</span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
+                  HISTORICAL TRENDS
+                </span>
+              </h3>
+              <p className="text-xs text-neutral-400">
+                Fuatilia mwenendo wa wageni, muda waliokaa, na mapato kwa siku, wiki, na mwezi.
+              </p>
+            </div>
+          </div>
+
+          {/* Period Filter (Siku / Wiki / Mwezi) */}
+          <div className="flex items-center gap-1 bg-neutral-950 p-1 rounded-xl border border-neutral-800 text-xs font-bold self-start sm:self-auto">
+            <button
+              onClick={() => {
+                setChartPeriod('daily');
+                memeAudio.playPop();
+              }}
+              className={`px-3 py-1.5 rounded-lg transition-all ${
+                chartPeriod === 'daily'
+                  ? 'bg-amber-500 text-neutral-950 shadow-sm'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              📅 Siku (Siku 7)
+            </button>
+            <button
+              onClick={() => {
+                setChartPeriod('weekly');
+                memeAudio.playPop();
+              }}
+              className={`px-3 py-1.5 rounded-lg transition-all ${
+                chartPeriod === 'weekly'
+                  ? 'bg-amber-500 text-neutral-950 shadow-sm'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              📊 Wiki (Wiki 4)
+            </button>
+            <button
+              onClick={() => {
+                setChartPeriod('monthly');
+                memeAudio.playPop();
+              }}
+              className={`px-3 py-1.5 rounded-lg transition-all ${
+                chartPeriod === 'monthly'
+                  ? 'bg-amber-500 text-neutral-950 shadow-sm'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              🗓️ Mwezi (Miezi 6)
+            </button>
+          </div>
+        </div>
+
+        {/* Metric Selectors (Wageni, Muda, Mapato, Reels) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button
+            onClick={() => {
+              setChartMetric('visits');
+              memeAudio.playPop();
+            }}
+            className={`p-3 rounded-xl border text-left transition-all ${
+              chartMetric === 'visits'
+                ? 'bg-sky-500/15 border-sky-500/60 text-white shadow-md'
+                : 'bg-neutral-950/60 border-neutral-800 text-neutral-400 hover:border-neutral-700'
+            }`}
+          >
+            <p className="text-[10px] uppercase font-bold text-sky-400">Waliofungua App</p>
+            <p className="text-lg font-black font-mono text-sky-300">
+              {(stats.chartAnalytics?.[chartPeriod]?.reduce((s, r) => s + (Number(r.visits) || 0), 0) || 0).toLocaleString()}
+            </p>
+            <p className="text-[10px] text-neutral-400">Visits & Unique</p>
+          </button>
+
+          <button
+            onClick={() => {
+              setChartMetric('screen_time');
+              memeAudio.playPop();
+            }}
+            className={`p-3 rounded-xl border text-left transition-all ${
+              chartMetric === 'screen_time'
+                ? 'bg-purple-500/15 border-purple-500/60 text-white shadow-md'
+                : 'bg-neutral-950/60 border-neutral-800 text-neutral-400 hover:border-neutral-700'
+            }`}
+          >
+            <p className="text-[10px] uppercase font-bold text-purple-400">Muda Waliokaa</p>
+            <p className="text-lg font-black font-mono text-purple-300">
+              {(stats.chartAnalytics?.[chartPeriod]?.reduce((s, r) => s + (Number(r.screen_time_min) || 0), 0) || 0).toLocaleString()} m
+            </p>
+            <p className="text-[10px] text-neutral-400">Dakika za Screen Time</p>
+          </button>
+
+          <button
+            onClick={() => {
+              setChartMetric('revenue');
+              memeAudio.playPop();
+            }}
+            className={`p-3 rounded-xl border text-left transition-all ${
+              chartMetric === 'revenue'
+                ? 'bg-emerald-500/15 border-emerald-500/60 text-white shadow-md'
+                : 'bg-neutral-950/60 border-neutral-800 text-neutral-400 hover:border-neutral-700'
+            }`}
+          >
+            <p className="text-[10px] uppercase font-bold text-emerald-400">Mapato ya M-Pesa</p>
+            <p className="text-lg font-black font-mono text-emerald-300">
+              TZS {(stats.chartAnalytics?.[chartPeriod]?.reduce((s, r) => s + (Number(r.revenue) || 0), 0) || 0).toLocaleString()}
+            </p>
+            <p className="text-[10px] text-neutral-400">Miamala ya Tigo/M-Pesa</p>
+          </button>
+
+          <button
+            onClick={() => {
+              setChartMetric('reels');
+              memeAudio.playPop();
+            }}
+            className={`p-3 rounded-xl border text-left transition-all ${
+              chartMetric === 'reels'
+                ? 'bg-amber-500/15 border-amber-500/60 text-white shadow-md'
+                : 'bg-neutral-950/60 border-neutral-800 text-neutral-400 hover:border-neutral-700'
+            }`}
+          >
+            <p className="text-[10px] uppercase font-bold text-amber-400">Reels Views</p>
+            <p className="text-lg font-black font-mono text-amber-300">
+              {(stats.chartAnalytics?.[chartPeriod]?.reduce((s, r) => s + (Number(r.reels_watched) || 0), 0) || 0).toLocaleString()}
+            </p>
+            <p className="text-[10px] text-neutral-400">Video zilizotazamwa</p>
+          </button>
+        </div>
+
+        {/* Visual Chart Card */}
+        <div className="bg-neutral-950 border border-neutral-800 rounded-xl p-4 space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
+            <span className="font-bold text-white flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: config.color }} />
+              <span>{config.title} ({chartPeriod === 'daily' ? 'Siku 7 Zilizopita' : chartPeriod === 'weekly' ? 'Wiki 4 Zilizopita' : 'Miezi 6 Iliyopita'})</span>
+            </span>
+            <span className="font-mono text-neutral-400 text-[11px]">
+              Kilele cha Juu: <strong className="text-white">{config.format(maxVal)}</strong> ({peakLabel})
+            </span>
+          </div>
+
+          {/* SVG Interactive Chart Canvas */}
+          <div className="relative w-full overflow-hidden">
+            <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-52 sm:h-64 overflow-visible">
+              <defs>
+                <linearGradient id={config.gradId} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={config.color} stopOpacity="0.4" />
+                  <stop offset="100%" stopColor={config.color} stopOpacity="0.0" />
+                </linearGradient>
+              </defs>
+
+              {/* Horizontal Gridlines */}
+              {[0, 0.25, 0.5, 0.75, 1].map((pct, i) => {
+                const y = height - padBottom - pct * plotH;
+                const gridVal = Math.round(pct * safeMax);
+                return (
+                  <g key={i}>
+                    <line
+                      x1={padLeft}
+                      y1={y}
+                      x2={width - padRight}
+                      y2={y}
+                      stroke="rgba(255,255,255,0.06)"
+                      strokeDasharray="4 4"
+                    />
+                    <text
+                      x={padLeft - 8}
+                      y={y + 3}
+                      textAnchor="end"
+                      fill="#737373"
+                      fontSize="9"
+                      fontFamily="monospace"
+                    >
+                      {gridVal}
+                    </text>
+                  </g>
+                );
+              })}
+
+              {/* Background comparison bars */}
+              {points.map((p) => {
+                const barWidth = Math.max(16, plotW / (points.length * 2.8));
+                const barH = height - padBottom - p.y;
+                return (
+                  <rect
+                    key={p.idx}
+                    x={p.x - barWidth / 2}
+                    y={p.y}
+                    width={barWidth}
+                    height={Math.max(barH, 2)}
+                    rx="4"
+                    fill={config.color}
+                    opacity={hoveredPointIndex === p.idx ? '0.45' : '0.15'}
+                    className="transition-all duration-200 cursor-pointer"
+                    onMouseEnter={() => setHoveredPointIndex(p.idx)}
+                    onMouseLeave={() => setHoveredPointIndex(null)}
+                  />
+                );
+              })}
+
+              {/* Area Gradient Fill */}
+              {area && <path d={area} fill={`url(#${config.gradId})`} />}
+
+              {/* Trend Polyline */}
+              {polyline && (
+                <polyline
+                  fill="none"
+                  stroke={config.color}
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  points={polyline}
+                />
+              )}
+
+              {/* Interactive Circles & Labels */}
+              {points.map((p) => {
+                const isHovered = hoveredPointIndex === p.idx;
+                return (
+                  <g key={p.idx} className="cursor-pointer">
+                    <circle
+                      cx={p.x}
+                      cy={p.y}
+                      r={isHovered ? 6 : 4}
+                      fill="#0a0a0a"
+                      stroke={config.color}
+                      strokeWidth={isHovered ? 3 : 2}
+                      className="transition-all duration-150"
+                      onMouseEnter={() => setHoveredPointIndex(p.idx)}
+                      onMouseLeave={() => setHoveredPointIndex(null)}
+                    />
+
+                    {/* Value Badge on hover or peak */}
+                    {(isHovered || (p.val === maxVal && maxVal > 0)) && (
+                      <g>
+                        <rect
+                          x={p.x - 30}
+                          y={p.y - 24}
+                          width="60"
+                          height="18"
+                          rx="4"
+                          fill="#171717"
+                          stroke={config.color}
+                          strokeWidth="1"
+                        />
+                        <text
+                          x={p.x}
+                          y={p.y - 12}
+                          textAnchor="middle"
+                          fill="#ffffff"
+                          fontSize="9"
+                          fontWeight="bold"
+                          fontFamily="monospace"
+                        >
+                          {p.val.toLocaleString()}
+                        </text>
+                      </g>
+                    )}
+
+                    {/* X-axis Label */}
+                    <text
+                      x={p.x}
+                      y={height - padBottom + 16}
+                      textAnchor="middle"
+                      fill={isHovered ? '#ffffff' : '#a3a3a3'}
+                      fontSize="10"
+                      fontWeight={isHovered ? 'bold' : 'normal'}
+                      fontFamily="sans-serif"
+                    >
+                      {p.d.label || p.d.day_name}
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
+
+            {/* Hover Tooltip Overlay */}
+            {hoveredPointIndex !== null && points[hoveredPointIndex] && (
+              <div 
+                className="absolute top-2 left-1/2 -translate-x-1/2 bg-neutral-900 border border-neutral-700/80 rounded-xl px-3.5 py-1.5 shadow-2xl flex items-center gap-3 text-xs pointer-events-none animate-fade-in"
+              >
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-amber-400" />
+                  <span className="font-bold text-white font-mono">{points[hoveredPointIndex].d.label}</span>
+                </div>
+                <div className="h-3 w-px bg-neutral-700" />
+                <div className="flex items-center gap-1.5">
+                  <span className="text-neutral-400">{config.unit}:</span>
+                  <span className="font-extrabold text-white font-mono" style={{ color: config.color }}>
+                    {config.format(points[hoveredPointIndex].val)}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Bottom KPI Highlights for the active period */}
+          <div className="grid grid-cols-3 gap-2 pt-2 border-t border-neutral-900 text-center">
+            <div className="p-2.5 rounded-lg bg-neutral-900/60">
+              <p className="text-[10px] text-neutral-400 uppercase font-semibold">Jumla ya Kipindi</p>
+              <p className="text-sm font-black text-white font-mono">{config.format(totalPeriod)}</p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-neutral-900/60">
+              <p className="text-[10px] text-neutral-400 uppercase font-semibold">Wastani kwa {chartPeriod === 'daily' ? 'Siku' : chartPeriod === 'weekly' ? 'Wiki' : 'Mwezi'}</p>
+              <p className="text-sm font-black text-white font-mono">{config.format(avgPeriod)}</p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-neutral-900/60">
+              <p className="text-[10px] text-amber-400 uppercase font-semibold">Kilele cha Juu ({peakLabel})</p>
+              <p className="text-sm font-black text-amber-300 font-mono">{config.format(maxVal)}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -391,6 +881,22 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
         >
           <Timer className="w-4 h-4 text-emerald-400" />
           <span>Wageni & Muda ({stats.visitorAnalytics?.totalVisits || 0})</span>
+        </button>
+
+        <button
+          onClick={() => {
+            setActiveTab('charts');
+            fetchLiveStats();
+            memeAudio.playPop();
+          }}
+          className={`flex items-center gap-2 px-4 py-3 border-b-2 font-bold text-xs whitespace-nowrap transition-colors ${
+            activeTab === 'charts'
+              ? 'border-amber-400 text-amber-300'
+              : 'border-transparent text-neutral-400 hover:text-neutral-200'
+          }`}
+        >
+          <BarChart3 className="w-4 h-4 text-amber-400" />
+          <span>Chati & Uchambuzi</span>
         </button>
 
         <button
@@ -606,6 +1112,9 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
                 </div>
               </div>
             </div>
+
+            {/* Interactive Charts & Historical Trends */}
+            {renderInteractiveChart()}
 
             {/* Quick Action shortcuts for Owner */}
             <div className="bg-neutral-900 border border-amber-500/20 rounded-2xl p-5 space-y-3">
@@ -1356,6 +1865,13 @@ export const OwnerAdminDashboard: React.FC<OwnerAdminDashboardProps> = ({
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* TAB 7: CHARTS & HISTORICAL ANALYTICS */}
+        {activeTab === 'charts' && (
+          <div className="space-y-6">
+            {renderInteractiveChart(true)}
           </div>
         )}
       </div>
